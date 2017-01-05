@@ -1,6 +1,7 @@
 # Pic of the Day, by Team oKHLahoMa
 
 Team members: Edmond Lam, Daniel Monteagudo, Kelly Wang, Haley Zeng
+
 Mr. Brown | Software Development | Pd 8 | Fall 2016
 
 ## About the Project
