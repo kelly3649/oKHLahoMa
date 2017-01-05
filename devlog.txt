@@ -1,0 +1,23 @@
+kellyW, edmondL, danielM, haleyZ -- 2017-01-03 14:00
+brainstormed and finalized idea for project, role delegation
+
+danielM -- 2017-01-04 14:00
+researched cloudinary API, tested it
+
+edmondL -- 2017-01-04 14:00
+researched Spotify API
+
+haleyZ -- 2017-01-04 14:00
+started design doc, wrote out the idea
+
+haleyZ -- 2017-01-04 21:30
+started component map for design doc; split design into core and extended functionality
+
+danielM -- 2017-01-05 14:00
+created database schema for the design doc
+
+edmondL -- 2017-01-05 14:00
+more research into cloudinary
+
+haleyZ -- 2017-01-05 14:00
+component map for design doc
