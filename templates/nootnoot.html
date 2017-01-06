@@ -8,10 +8,15 @@
     <br>
 
     <button onclick="printPhoto()">Load File</button>
-    <div id="check"></div>
+    <div id="check">Wait</div>
     <form action="/" method="POST">
       <input id="lul" name="sneaky" type="hidden" value=""/>
       <input name="submit" type="submit" value="Submit Photo"/>
+    </form>
+    <br>
+    <form action="/spootify" method="POST">
+      <input name="query" type="text" value="" placeholder="Search Spotify"/>
+      <input name="submit" type="submit" value="Search"/>
     </form>
   </body>
 </html>
