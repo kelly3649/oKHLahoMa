@@ -4,11 +4,18 @@ import hashlib, sys
 db = sqlite3.connect("data/mississippi.db")
 c = db.cursor()
 
-#USERS FORMAT
-#{'username': 'TEXT', 'streak': 'INTEGER', 'user_id': 'INTEGER', 'last_upload': 'INTEGER', 'pwd_hash': 'TEXT', 'max_streak': 'INTEGER'}
+# USERS FORMAT
+
+#0|user_id|INTEGER|0||0
+#1|username|TEXT|0||0
+#2|pwd_hash|TEXT|0||0
+#3|streak|INTEGER|0||0
+#4|max_streak|INTEGER|0||0
+#5|last_upload|INTEGER|0||0
+
 def createUser(username, pass_hash):
     query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, 0)"
-    newID = hash('asdf') % ((sys.maxsize + 1))
+    newID = hash(username) % ((sys.maxsize + 1))
     c.execute(query, (newID, username, pass_hash))
     db.commit()
 
@@ -22,7 +29,28 @@ def checkUsername(username):
     # Returns false if the username is in use
     return len(c.fetchall()) == 0
 
+def getUserID(username):
+    c.execute("SELECT user_id FROM users where username = ?", (username,))
+    return c.fetchone()[0]
+ 
+# POST FORMAT
 
+#0|post_id|INTEGER|0||0
+#1|author|INTEGER|0||0
+#2|photo_link|TEXT|0||0
+#3|caption|TEXT|0||0
+#4|upload_date|INTEGER|0||0
+
+def createPost(username, timestamp, image, caption):
+    query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
+    newID = hash(image) % ((sys.maxsize + 1))
+    c.execute(query, (newID, getUserID(username), image, caption, timestamp))
+    db.commit()
+
+def getPostsForUser(username):
+    c.execute('SELECT * FROM posts WHERE author = ?', (getUserID(username),))
+    print c.fetchall()
+            
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     stringtable = []

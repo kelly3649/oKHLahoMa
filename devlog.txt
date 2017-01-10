@@ -24,3 +24,6 @@ component map for design doc
 
 danielM -- 2017-01-09 20:55
 created dbUtils and basic login functionality. Also built databases.
+
+danielM -- 2017-01-10 13:00
+added some methods for manipulating user data. Also added basic post functions.
