@@ -30,3 +30,8 @@ began the master template, coded nav bar
 
 haleyZ -- 2017-01-10 13:55
 login and register page done basically
+
+danielM -- 2017-01-10 14:00
+added some methods for manipulating user data. Also added basic post functions.
+
+
