@@ -33,7 +33,7 @@ def spootify():
 
 @app.route("/login")
 def login():
-    return render_template("master.html")
+    return render_template("logreg.html")
     
 if __name__ == "__main__":
         app.debug = True
