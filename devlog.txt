@@ -21,3 +21,6 @@ more research into cloudinary
 
 haleyZ -- 2017-01-05 14:00
 component map for design doc
+
+danielM -- 2017-01-09 20:55
+created dbUtils and basic login functionality. Also built databases.
