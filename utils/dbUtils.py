@@ -13,10 +13,10 @@ c = db.cursor()
 #4|max_streak|INTEGER|0||0
 #5|last_upload|INTEGER|0||0
 
-def createUser(username, pass_hash):
-    query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, 0)"
+def createUser(username, pass_hash, timestamp):
+    query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, ?)"
     newID = hash(username) % ((sys.maxsize + 1))
-    c.execute(query, (newID, username, pass_hash))
+    c.execute(query, (newID, username, pass_hash, timestamp))
     db.commit()
 
 def checkLogin(username, hash_pass):
