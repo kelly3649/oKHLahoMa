@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css">
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+
+  <body>
+    
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+	<div class="navbar-header">
+	  <a class="navbar-brand" href="#">Pic of the Day</a>
+	</div>
+
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="top-nav
+						  ">
+	  <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+	  </ul>
+
+
+	  <ul class="nav navbar-nav navbar-right">
+	    <!--  search bar
+
+		  <form class="navbar-form navbar-left">
+		    <div class="form-group">
+		      <input type="text" class="form-control" placeholder="Search">
+		    </div>
+		    <button type="submit" class="btn btn-default">Submit</button>
+		  </form>
+		  -->
+	    <li><a href="#">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+	  </ul>
+
+	</div>
+      </div>
+    </nav>
+
+    
+    <div class="container-fluid">
+
+      <div class="row">
+
+	<div class="col-md-3"></div>
+	<div class="col-md-3">
+
+	  <div class="panel panel-default">
+
+            <div class="panel-heading">
+              <h2 class="panel-title">Login</h2>
+            </div>
+
+            <div class="panel-body">
+              <form action="/login" method="POST">
+                <input name="username" type="text" class="form-control" placeholder="Username" required>
+                <br>
+                <input name="password" type="password" class="form-control" placeholder="Password" required>
+                <br>
+                <input type="submit" class="btn btn-primary" value="Login">
+              </form>
+            </div>
+
+          </div>
+
+	</div>
+
+	<div class="col-md-3">
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+              <h2 class="panel-title">Register</h2>
+            </div>
+            <div class="panel-body">
+              <form action="/register" method="POST">
+		<input name="username" type="text" class="form-control" placeholder="Username" required>
+		<br>
+		<input name="password" type="password" class="form-control" placeholder="Password" required>
+		<br>
+		<input name="confirm_password" type="password" class="form-control" placeholder="Confirm password" required>
+		<br>
+		<input type="submit" class="btn btn-primary" value="Register">
+              </form>
+	    </div>
+          </div>
+        </div>
+	
+	<div class="col-md-3"></div>
+
+      </div>
+    </div>
+
+
+
+
+
+  </body>
+
+</html>

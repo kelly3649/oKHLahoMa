@@ -30,6 +30,11 @@ def spootify():
         dictstr +=  "<iframe src='https://embed.spotify.com/?uri=%s' frameborder='0' width='300' height='%s'></iframe>" % (firstresult['uri'], height)
         dictstr+="<br>"
     return dictstr
+
+@app.route("/login")
+def login():
+    return render_template("master.html")
     
 if __name__ == "__main__":
-    app.run()
+        app.debug = True
+        app.run()
