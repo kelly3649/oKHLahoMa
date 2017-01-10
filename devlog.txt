@@ -24,3 +24,9 @@ component map for design doc
 
 danielM -- 2017-01-09 20:55
 created dbUtils and basic login functionality. Also built databases.
+
+haleyZ -- 2017-01-09 14:00
+began the master template, coded nav bar
+
+haleyZ -- 2017-01-10 13:55
+login and register page done basically
