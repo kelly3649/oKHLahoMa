@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-import sqlite3, request
+import sqlite3, requests
 from utils import dbUtils as db
 import hashlib, os, datetime, time
 
@@ -45,7 +45,7 @@ def register():
     timestamp = int(time.time())
     if db.checkUsername(username):
         message = "Success! Please log in with your credentials."
-        db.createUser(username,password,timestamp)
+        db.createUser(username,str(password),timestamp)
         return render_template("master.html", error = message)
     else:
         message = "Username exists already. Please choose another username."
