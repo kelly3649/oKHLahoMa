@@ -1,7 +1,8 @@
 import sqlite3
 import hashlib, sys
 
-db = c = None
+db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
+c = db.cursor()
 
 # USERS FORMAT
 
@@ -11,10 +12,6 @@ db = c = None
 #3|streak|INTEGER|0||0
 #4|max_streak|INTEGER|0||0
 #5|last_upload|INTEGER|0||0
-def initConnection():
-    global db, c
-    db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
-    c = db.cursor()
     
 def createUser(username, pass_hash, timestamp):
     db = sqlite3.connect("data/mississippi.db")
@@ -71,4 +68,4 @@ def columns(tablename):
         stringdict[str(tuplet[1])] = str(tuplet[2])
     return stringdict
 
-initConnection()
+
