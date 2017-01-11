@@ -1,16 +1,29 @@
 import sqlite3
 import hashlib, sys
 
-db = sqlite3.connect("data/mississippi.db")
-c = db.cursor()
+db = c = None
 
-#USERS FORMAT
-#{'username': 'TEXT', 'streak': 'INTEGER', 'user_id': 'INTEGER', 'last_upload': 'INTEGER', 'pwd_hash': 'TEXT', 'max_streak': 'INTEGER'}
-def createUser(username, pass_hash):
-    query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, 0)"
-    newID = hash('asdf') % ((sys.maxsize + 1))
-    c.execute(query, (newID, username, pass_hash))
+# USERS FORMAT
+
+#0|user_id|INTEGER|0||0
+#1|username|TEXT|0||0
+#2|pwd_hash|TEXT|0||0
+#3|streak|INTEGER|0||0
+#4|max_streak|INTEGER|0||0
+#5|last_upload|INTEGER|0||0
+def initConnection():
+    global db, c
+    db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
+    c = db.cursor()
+    
+def createUser(username, pass_hash, timestamp):
+    db = sqlite3.connect("data/mississippi.db")
+    c = db.cursor()
+    query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, ?)"
+    newID = hash(username) % ((sys.maxsize + 1))
+    c.execute(query, (newID, username, pass_hash, timestamp))
     db.commit()
+    db.close()
 
 def checkLogin(username, hash_pass):
     c.execute("SELECT username FROM users WHERE username = ? AND pwd_hash = ?", (username, hash_pass))
@@ -22,7 +35,28 @@ def checkUsername(username):
     # Returns false if the username is in use
     return len(c.fetchall()) == 0
 
+def getUserID(username):
+    c.execute("SELECT user_id FROM users where username = ?", (username,))
+    return c.fetchone()[0]
+ 
+# POST FORMAT
 
+#0|post_id|INTEGER|0||0
+#1|author|INTEGER|0||0
+#2|photo_link|TEXT|0||0
+#3|caption|TEXT|0||0
+#4|upload_date|INTEGER|0||0
+
+def createPost(username, timestamp, image, caption):
+    query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
+    newID = hash(image) % ((sys.maxsize + 1))
+    c.execute(query, (newID, getUserID(username), image, caption, timestamp))
+    db.commit()
+
+def getPostsForUser(username):
+    c.execute('SELECT * FROM posts WHERE author = ?', (getUserID(username),))
+    print c.fetchall()
+            
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     stringtable = []
@@ -36,3 +70,5 @@ def columns(tablename):
     for tuplet in c.fetchall():
         stringdict[str(tuplet[1])] = str(tuplet[2])
     return stringdict
+
+initConnection()
