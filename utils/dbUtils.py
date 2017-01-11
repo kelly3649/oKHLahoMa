@@ -1,7 +1,7 @@
 import sqlite3
 import hashlib, sys
 
-db = sqlite3.connect("data/mississippi.db")
+db = sqlite3.connect("data/mississippi.db", check_same_thread=False)
 c = db.cursor()
 
 # USERS FORMAT
