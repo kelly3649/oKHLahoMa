@@ -36,3 +36,6 @@ added some methods for manipulating user data. Also added basic post functions.
 
 haleyZ -- 2017-01-11 14:00
 started the js data validation for log in and register
+
+danielM -- 2017-01-11 14:00
+Fixed some issues with login and db management. Deleted useless files.
