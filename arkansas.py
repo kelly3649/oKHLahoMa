@@ -21,7 +21,7 @@ def sanitize(string):
 @app.route("/")
 def mainpage():
     if 'username' in session:
-        return redirect(url_for("home"))
+        return render_template("master.html")
     return render_template("logreg.html")
 
 @app.route("/login", methods=['POST'])
@@ -29,10 +29,10 @@ def login():
     username = request.form['username']
     password = hashlib.sha1()
     password.update(request.form['password'])
-    password.hexdigest()
-    if checkLogin(username, password):
+    password = password.hexdigest()
+    if db.checkLogin(username, password):
         session['username'] = username;
-        return render.template()
+        return "Success!" #render_template("master.html")
 
 @app.route("/register", methods=['POST'])
 def register():
