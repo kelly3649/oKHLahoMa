@@ -34,4 +34,5 @@ login and register page done basically
 danielM -- 2017-01-10 14:00
 added some methods for manipulating user data. Also added basic post functions.
 
-
+haleyZ -- 2017-01-11 14:00
+started the js data validation for log in and register
