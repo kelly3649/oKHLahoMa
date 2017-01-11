@@ -24,7 +24,7 @@ def mainpage():
         return redirect(url_for("home"))
     return render_template("logreg.html")
 
-@app.route("/login")
+@app.route("/login", methods=['POST'])
 def login():
     username = request.form['username']
     password = hashlib.sha1()
@@ -41,15 +41,15 @@ def register():
     username = request.form['username']
     password = hashlib.sha1()
     password.update(request.form['password'])
-    password.hexdigest()
+    password = password.hexdigest()
     timestamp = int(time.time())
     if db.checkUsername(username):
         message = "Success! Please log in with your credentials."
         db.createUser(username,str(password),timestamp)
-        return render_template("master.html", error = message)
+        return render_template("logreg.html", error = message)
     else:
         message = "Username exists already. Please choose another username."
-        return render_template("login.html", error = message)
+        return render_template("logreg.html", error = message)
 
 @app.route("/logout")
 def logout():
