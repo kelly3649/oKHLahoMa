@@ -33,6 +33,10 @@ def checkUsername(username):
     # Returns false if the username is in use
     return len(c.fetchall()) == 0
 
+def reverseLookup(userID):
+    c.execute("SELECT username FROM users WHERE user_id = ?", (userID,))
+    return c.fetchone()[0]
+
 def getUserInfo(username):
     c.execute("SELECT * FROM users WHERE username = ?", (username,))
     items = c.fetchone()
@@ -47,6 +51,10 @@ def getUserInfo(username):
 #3|caption|TEXT|0||0
 #4|upload_date|INTEGER|0||0
 
+def dictifyPost(items):
+    info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])) }
+    return info
+
 def createPost(username, image, caption):
     query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
     newID = hash(image) % ((sys.maxsize + 1))
@@ -59,15 +67,34 @@ def createPost(username, image, caption):
     if timenow - userinfo['last_upload'] < 60*60*24:
         c.execute("UPDATE users SET streak = ? WHERE username = ?", (userinfo['streak']+1, username))
         userinfo['streak'] += 1
-    if userinfo['streak'] > userinfo['max_streak']:
-        c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userinfo['streak'], username))
+        if userinfo['streak'] > userinfo['max_streak']:
+            c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userinfo['streak'], username))
+    else:
+        c.execute("UPDATE users SET streak = 0 WHERE username = ?", (username,))
     db.commit()
-    print str(time.gmtime(timenow)[2]) + " vs " + str(time.gmtime(userinfo['last_upload'])[2])
-
+    print "Today's Day: " + str(time.gmtime(timenow)[2]) + ", Last Upload's Day: " + str(time.gmtime(userinfo['last_upload'])[2])
     
+def getPostByID(postID):
+    c.execute('SELECT * FROM posts WHERE post_id = ?', (postID,))
+    return dictifyPost(c.fetchone())
+
+def getSomePosts(number, offset, user='*'):
+    if user != '*':
+        user = getUserInfo(user)['user_id']
+        c.execute('SELECT * FROM posts WHERE author = ? LIMIT ? OFFSET ?', (user, number, offset))
+    else:
+        c.execute('SELECT * FROM posts LIMIT ? OFFSET ?', (number, offset))
+    postlist = []
+    for item in c.fetchall():
+        postlist.append(dictifyPost(item))
+    return postlist
+
 def getPostsForUser(username):
     c.execute('SELECT * FROM posts WHERE author = ?', (getUserInfo(username)['user_id'],))
-    return c.fetchall()
+    postlist = []
+    for item in c.fetchall():
+        postlist.append(dictifyPost(item))
+    return postlist
             
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
