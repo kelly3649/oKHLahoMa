@@ -42,3 +42,6 @@ Fixed some issues with login and db management. Deleted useless files.
 
 haleyZ -- 2017-01-12 00:08
 continued the js data validation for log in and register -- error message on the page if failed to meet reg requirements.
+
+haleyZ -- 2017-01-12 00:50
+finished js for client-side form validation and added jinja spot for server-side error msg; started a homecooked-css file for logreg
