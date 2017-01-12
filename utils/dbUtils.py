@@ -1,5 +1,6 @@
 import sqlite3
 import hashlib, sys
+import time
 
 db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
 c = db.cursor()
@@ -13,12 +14,12 @@ c = db.cursor()
 #4|max_streak|INTEGER|0||0
 #5|last_upload|INTEGER|0||0
     
-def createUser(username, pass_hash, timestamp):
+def createUser(username, pass_hash):
     db = sqlite3.connect("data/mississippi.db")
     c = db.cursor()
     query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, ?)"
     newID = hash(username) % ((sys.maxsize + 1))
-    c.execute(query, (newID, username, pass_hash, timestamp))
+    c.execute(query, (newID, username, pass_hash, int(time.time())))
     db.commit()
     db.close()
 
@@ -44,10 +45,10 @@ def getUserID(username):
 #3|caption|TEXT|0||0
 #4|upload_date|INTEGER|0||0
 
-def createPost(username, timestamp, image, caption):
+def createPost(username, image, caption):
     query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
-    newID = hash(image) % ((sys.maxsize + 1))
-    c.execute(query, (newID, getUserID(username), image, caption, timestamp))
+    newID = hash(image % ((sys.maxsize + 1))
+    c.execute(query, (newID, getUserID(username), image, caption, int(time.time())))
     db.commit()
 
 def getPostsForUser(username):
