@@ -1,3 +1,8 @@
+var showValidationError = function(text){
+    var error = document.getElementById("dverror");
+    error.innerHTML = text;
+};
+
 var validateRegister = function(){
     var username = document.forms["register"]["username"].value;
     var pass1 = document.forms["register"]["password"].value;
@@ -6,8 +11,7 @@ var validateRegister = function(){
     if (username == ""){
 	alertmsg += "Username required.\n";
     }
-    else
-	console.log("<<" + username + ">>");
+    
     if (pass1 == "" || pass2 == ""){
 	alertmsg += "Both password fields required.\n";
     }
@@ -17,10 +21,10 @@ var validateRegister = function(){
     if (pass1.length < 10){
 	alertmsg += "Password must be at least 10 characters long.";
     }
-    
     if (alertmsg != ""){
-	alert(alertmsg);
+	showValidationError(alertmsg);
 	return false;
     }
     
 };
+

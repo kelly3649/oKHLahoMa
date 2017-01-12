@@ -39,3 +39,6 @@ started the js data validation for log in and register
 
 danielM -- 2017-01-11 14:00
 Fixed some issues with login and db management. Deleted useless files.
+
+haleyZ -- 2017-01-12 00:08
+continued the js data validation for log in and register -- error message on the page if failed to meet reg requirements.
