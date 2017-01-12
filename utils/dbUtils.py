@@ -33,10 +33,12 @@ def checkUsername(username):
     # Returns false if the username is in use
     return len(c.fetchall()) == 0
 
-def getUserID(username):
-    c.execute("SELECT user_id FROM users where username = ?", (username,))
-    return c.fetchone()[0]
- 
+def getUserInfo(username):
+    c.execute("SELECT * FROM users WHERE username = ?", (username,))
+    items = c.fetchone()
+    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5] }
+    return info
+
 # POST FORMAT
 
 #0|post_id|INTEGER|0||0
@@ -47,19 +49,31 @@ def getUserID(username):
 
 def createPost(username, image, caption):
     query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
-    newID = hash(image % ((sys.maxsize + 1))
-    c.execute(query, (newID, getUserID(username), image, caption, int(time.time())))
+    newID = hash(image) % ((sys.maxsize + 1))
+    timenow = int(time.time())
+    userinfo = getUserInfo(username)
+    if time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getPostsForUser(username)) == 0:
+        print "new day"
+    c.execute(query, (newID, userinfo['user_id'], image, caption, timenow))
+    c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (timenow, username))
+    if timenow - userinfo['last_upload'] < 60*60*24:
+        c.execute("UPDATE users SET streak = ? WHERE username = ?", (userinfo['streak']+1, username))
+        userinfo['streak'] += 1
+    if userinfo['streak'] > userinfo['max_streak']:
+        c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userinfo['streak'], username))
     db.commit()
+    print str(time.gmtime(timenow)[2]) + " vs " + str(time.gmtime(userinfo['last_upload'])[2])
 
+    
 def getPostsForUser(username):
-    c.execute('SELECT * FROM posts WHERE author = ?', (getUserID(username),))
-    print c.fetchall()
+    c.execute('SELECT * FROM posts WHERE author = ?', (getUserInfo(username)['user_id'],))
+    return c.fetchall()
             
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     stringtable = []
     for table in c.fetchall():
-        stringtable.append(str(table[0]))
+        stringtable.append(sntr(table[0]))
     return stringtable
 
 def columns(tablename):
