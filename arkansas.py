@@ -24,8 +24,18 @@ def mainpage():
         return render_template("master.html")
     return render_template("logreg.html")
 
+@app.route("/checkUser")
+def userCheck():
+    data = request.args.get("text")
+
+    result = {'result': db.checkUsername(username)}
+    
+    return json.dumps(result)
+        
 @app.route("/login", methods=['POST'])
 def login():
+    if 'username' in session:
+        return redirect(url_for("mainpage"))
     username = request.form['username']
     password = hashlib.sha1()
     password.update(request.form['password'])
