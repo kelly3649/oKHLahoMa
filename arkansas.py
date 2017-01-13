@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+ .from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3, requests
 from utils import dbUtils as db
 import hashlib, os, datetime
@@ -32,7 +32,9 @@ def login():
     password = password.hexdigest()
     if db.checkLogin(username, password):
         session['username'] = username;
-        return "Success!" #render_template("master.html")
+        return render_template("master.html")
+    else:
+        return render_template("logreg.html", error = "The credentials are wrong. Please try again.")
 
 @app.route("/register", methods=['POST'])
 def register():
