@@ -51,10 +51,16 @@ def getUserInfo(username):
 #3|caption|TEXT|0||0
 #4|upload_date|INTEGER|0||0
 
+# Converts a tuple from a db call to a dict
+# Takes Args: TUPLE items
+# Returns: DICT
 def dictifyPost(items):
     info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])) }
     return info
 
+# Creates a post
+# Takes Args: STRING username, STRING image (represents image url), STRING caption
+# Returns: Nothing
 def createPost(username, image, caption):
     query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
     newID = hash(image) % ((sys.maxsize + 1))
@@ -72,30 +78,29 @@ def createPost(username, image, caption):
     else:
         c.execute("UPDATE users SET streak = 0 WHERE username = ?", (username,))
     db.commit()
-    print "Today's Day: " + str(time.gmtime(timenow)[2]) + ", Last Upload's Day: " + str(time.gmtime(userinfo['last_upload'])[2])
-    
+    #print "Today's Day: " + str(time.gmtime(timenow)[2]) + ", Last Upload's Day: " + str(time.gmtime(userinfo['last_upload'])[2])
+
+# Returns a dictified version of a post with a certain postID
+# Takes Args: INT postID
+# Returns: DICT
 def getPostByID(postID):
     c.execute('SELECT * FROM posts WHERE post_id = ?', (postID,))
     return dictifyPost(c.fetchone())
 
-def getSomePosts(number, offset, user='*'):
-    if user != '*':
+# Gets a certain number of posts with an option to get them from one user
+# Takes Args: INT postID
+# Returns: DICT
+def getSomePosts(number, page, user=None):
+    if user != None:
         user = getUserInfo(user)['user_id']
-        c.execute('SELECT * FROM posts WHERE author = ? LIMIT ? OFFSET ?', (user, number, offset))
+        c.execute('SELECT * FROM posts WHERE author = ? LIMIT ? OFFSET ?', (user, number, page * number))
     else:
-        c.execute('SELECT * FROM posts LIMIT ? OFFSET ?', (number, offset))
+        c.execute('SELECT * FROM posts LIMIT ? OFFSET ?', (number, page * number))
     postlist = []
     for item in c.fetchall():
         postlist.append(dictifyPost(item))
     return postlist
 
-def getPostsForUser(username):
-    c.execute('SELECT * FROM posts WHERE author = ?', (getUserInfo(username)['user_id'],))
-    postlist = []
-    for item in c.fetchall():
-        postlist.append(dictifyPost(item))
-    return postlist
-            
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     stringtable = []
