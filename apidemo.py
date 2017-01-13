@@ -34,7 +34,16 @@ def spootify():
 @app.route("/login")
 def login():
     return render_template("logreg.html", loginmessage="noo")
+
+
+@app.route("/checkUser")
+def userCheck():
+    data = request.args.get("text")
+
+    result = {'result': db.checkUsername(username)}
     
+    return json.dumps(result)
+
 if __name__ == "__main__":
         app.debug = True
         app.run()
