@@ -1,4 +1,4 @@
- .from flask import Flask, render_template, request, redirect, url_for, session, flash
+ from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3, requests
 from utils import dbUtils as db
 import hashlib, os, datetime
@@ -21,7 +21,9 @@ def sanitize(string):
 @app.route("/")
 def mainpage():
     if 'username' in session:
-        return render_template("master.html")
+        page = 1
+        post = db.getSomePosts(10, 0)
+        return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
 @app.route("/checkUser")
