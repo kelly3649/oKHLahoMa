@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+ .from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3, requests
 from utils import dbUtils as db
-import hashlib, os, datetime, time
+import hashlib, os, datetime
 
 app = Flask(__name__)
 #creates instance of Flask and passes env variable __name__
@@ -32,7 +32,9 @@ def login():
     password = password.hexdigest()
     if db.checkLogin(username, password):
         session['username'] = username;
-        return "Success!" #render_template("master.html")
+        return render_template("master.html")
+    else:
+        return render_template("logreg.html", error = "The credentials are wrong. Please try again.")
 
 @app.route("/register", methods=['POST'])
 def register():
@@ -42,10 +44,9 @@ def register():
     password = hashlib.sha1()
     password.update(request.form['password'])
     password = password.hexdigest()
-    timestamp = int(time.time())
     if db.checkUsername(username):
         message = "Success! Please log in with your credentials."
-        db.createUser(username,str(password),timestamp)
+        db.createUser(username,str(password))#,timestamp)
         return render_template("logreg.html", error = message)
     else:
         message = "Username exists already. Please choose another username."

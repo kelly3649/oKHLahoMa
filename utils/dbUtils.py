@@ -1,5 +1,6 @@
 import sqlite3
 import hashlib, sys
+import time
 
 db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
 c = db.cursor()
@@ -13,12 +14,12 @@ c = db.cursor()
 #4|max_streak|INTEGER|0||0
 #5|last_upload|INTEGER|0||0
     
-def createUser(username, pass_hash, timestamp):
+def createUser(username, pass_hash):
     db = sqlite3.connect("data/mississippi.db")
     c = db.cursor()
     query = "INSERT INTO users VALUES (?, ?, ?, 0, 0, ?)"
     newID = hash(username) % ((sys.maxsize + 1))
-    c.execute(query, (newID, username, pass_hash, timestamp))
+    c.execute(query, (newID, username, pass_hash, int(time.time())))
     db.commit()
     db.close()
 
@@ -32,10 +33,16 @@ def checkUsername(username):
     # Returns false if the username is in use
     return len(c.fetchall()) == 0
 
-def getUserID(username):
-    c.execute("SELECT user_id FROM users where username = ?", (username,))
+def reverseLookup(userID):
+    c.execute("SELECT username FROM users WHERE user_id = ?", (userID,))
     return c.fetchone()[0]
- 
+
+def getUserInfo(username):
+    c.execute("SELECT * FROM users WHERE username = ?", (username,))
+    items = c.fetchone()
+    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5] }
+    return info
+
 # POST FORMAT
 
 #0|post_id|INTEGER|0||0
@@ -44,21 +51,56 @@ def getUserID(username):
 #3|caption|TEXT|0||0
 #4|upload_date|INTEGER|0||0
 
-def createPost(username, timestamp, image, caption):
+def dictifyPost(items):
+    info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])) }
+    return info
+
+def createPost(username, image, caption):
     query = "INSERT INTO posts VALUES (?, ?, ?, ?, ?)"
     newID = hash(image) % ((sys.maxsize + 1))
-    c.execute(query, (newID, getUserID(username), image, caption, timestamp))
+    timenow = int(time.time())
+    userinfo = getUserInfo(username)
+    if time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getPostsForUser(username)) == 0:
+        print "new day"
+    c.execute(query, (newID, userinfo['user_id'], image, caption, timenow))
+    c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (timenow, username))
+    if timenow - userinfo['last_upload'] < 60*60*24:
+        c.execute("UPDATE users SET streak = ? WHERE username = ?", (userinfo['streak']+1, username))
+        userinfo['streak'] += 1
+        if userinfo['streak'] > userinfo['max_streak']:
+            c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userinfo['streak'], username))
+    else:
+        c.execute("UPDATE users SET streak = 0 WHERE username = ?", (username,))
     db.commit()
+    print "Today's Day: " + str(time.gmtime(timenow)[2]) + ", Last Upload's Day: " + str(time.gmtime(userinfo['last_upload'])[2])
+    
+def getPostByID(postID):
+    c.execute('SELECT * FROM posts WHERE post_id = ?', (postID,))
+    return dictifyPost(c.fetchone())
+
+def getSomePosts(number, offset, user='*'):
+    if user != '*':
+        user = getUserInfo(user)['user_id']
+        c.execute('SELECT * FROM posts WHERE author = ? LIMIT ? OFFSET ?', (user, number, offset))
+    else:
+        c.execute('SELECT * FROM posts LIMIT ? OFFSET ?', (number, offset))
+    postlist = []
+    for item in c.fetchall():
+        postlist.append(dictifyPost(item))
+    return postlist
 
 def getPostsForUser(username):
-    c.execute('SELECT * FROM posts WHERE author = ?', (getUserID(username),))
-    print c.fetchall()
+    c.execute('SELECT * FROM posts WHERE author = ?', (getUserInfo(username)['user_id'],))
+    postlist = []
+    for item in c.fetchall():
+        postlist.append(dictifyPost(item))
+    return postlist
             
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     stringtable = []
     for table in c.fetchall():
-        stringtable.append(str(table[0]))
+        stringtable.append(sntr(table[0]))
     return stringtable
 
 def columns(tablename):
