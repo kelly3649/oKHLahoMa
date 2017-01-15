@@ -1,22 +1,25 @@
 var usernameTaken = function(username) {
-    console.log(username);
     var input = { 'text' : username};
-    
-    var h = document.getElementById("h1");
-    h.innerHTML = i;
 
     $.ajax({
 	url: '/checkUser',
-	type: 'POST',
+	type: 'GET',
 	data: input,
 	success: function( d ) {
 	    d = JSON.parse(d);
 	    console.log(d);
-	    result = d['result'];
+	    taken = d['result'];
+	    console.log("success");
+	    console.log(taken);
+	    var place = document.getElementById("usernameTaken");
+	    if (!taken){
+		place.innerHTML = "Username taken.";
+	    };
+	    
+	    return taken;
 	}
 
     });
-    return false;
 };
 
 
@@ -25,10 +28,7 @@ var validateLogin = function(){
     var username = document.forms["login"]["username"].value;
     var pass1 = document.forms["login"]["password"].value;
     var alertmsg = "";
-    if (usernameTaken(username)){
-	return false;
-    }
-    else if (username == ""){
+    if (username == ""){
 	alertmsg += "* Please enter your username.<br>";
     }
     if (pass1 == ""){
@@ -47,7 +47,10 @@ var validateRegister = function(){
     var pass1 = document.forms["register"]["password"].value;
     var pass2 = document.forms["register"]["confirm_password"].value;
     var alertmsg = "";
-    if (username == ""){
+    if (usernameTaken(username)){
+	return false;
+    }
+    else if (username == ""){
 	alertmsg += "* Username required.<br>";
     };
     

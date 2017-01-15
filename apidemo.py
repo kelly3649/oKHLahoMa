@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 import requests as req
+from utils import dbUtils
+import json
 
 app = Flask(__name__)
 
@@ -36,11 +38,12 @@ def login():
     return render_template("logreg.html", loginmessage="noo")
 
 
-@app.route("/checkUser")
+@app.route("/checkUser", methods=["GET"])
 def userCheck():
-    data = request.args.get("text")
+    print 
+    username = request.args.get("text")
 
-    result = {'result': db.checkUsername(username)}
+    result = {'result': dbUtils.checkUsername(username)}
     
     return json.dumps(result)
 
