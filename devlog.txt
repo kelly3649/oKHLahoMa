@@ -49,6 +49,8 @@ continued the js data validation for log in and register -- error message on the
 haleyZ -- 2017-01-12 00:50
 finished js for client-side form validation and added jinja spot for server-side error msg; started a homecooked-css file for logreg
 
-
 haleyZ -- 2017-01-13 14:00
 working on ajax in the register to check if username taken
+
+haleyZ -- 2017-01-15 01:31
+fixed up the arkansas functions so that the ajax registration username validation works

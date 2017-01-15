@@ -7,15 +7,11 @@ var usernameTaken = function(username) {
 	data: input,
 	success: function( d ) {
 	    d = JSON.parse(d);
-	    console.log(d);
 	    taken = d['result'];
-	    console.log("success");
-	    console.log(taken);
 	    var place = document.getElementById("usernameTaken");
-	    if (!taken){
+	    if (taken){
 		place.innerHTML = "Username taken.";
 	    };
-	    
 	    return taken;
 	}
 

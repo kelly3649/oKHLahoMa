@@ -1,7 +1,8 @@
- from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3, requests
 from utils import dbUtils as db
 import hashlib, os, datetime
+import json
 
 app = Flask(__name__)
 #creates instance of Flask and passes env variable __name__
@@ -28,7 +29,7 @@ def mainpage():
 
 @app.route("/checkUser")
 def userCheck():
-    data = request.args.get("text")
+    username = request.args.get("text")
 
     result = {'result': db.checkUsername(username)}
     
