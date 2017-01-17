@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import sqlite3, requests
+import sqlite3
+import requests as req
 from utils import dbUtils as db
 import hashlib, os, datetime
 import json
@@ -27,10 +28,19 @@ def mainpage():
         return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
+@app.route("/page/<int: pg>"):
+def page(pg):
+    if 'username' in session:
+        post = db.getSomePosts(10, pg)
+        return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
+    return render_template("logreg.html")
+
 @app.route("/upload")
 def upload():
     if 'username' in session:
-        return render_template("logreg.html")
+        image = request.form['image']
+        requests.get("")
+    return render_template("logreg.html")
 
 @app.route("/checkUser")
 def userCheck():
