@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+  
+  <div class="row">
+
+    <div class="col-md-3">
+      <input id="noot" name="files[]" type="file" value="" style="display: block;"/>
+      <br>
+      
+      <button onclick="printPhoto()">Load File</button>
+      <div id="check">Wait</div>
+      <form action="/" method="POST">
+	<input id="lul" name="sneaky" type="hidden" value=""/>
+	<input name="submit" type="submit" value="Submit Photo"/>
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="static/js/nootnoot.js"></script>
+{% endblock %}
+

@@ -1,4 +1,4 @@
-var usernameTaken = function(username) {
+var usernameAvailable = function(username) {
     var input = { 'text' : username};
 
     $.ajax({
@@ -7,12 +7,15 @@ var usernameTaken = function(username) {
 	data: input,
 	success: function( d ) {
 	    d = JSON.parse(d);
-	    taken = d['result'];
+	    available = d['available'];
 	    var place = document.getElementById("usernameTaken");
-	    if (taken){
+	    if (! available){
 		place.innerHTML = "Username taken.";
+	    }
+	    else {
+		place.innerHTML = "<br>";
 	    };
-	    return taken;
+	    return available;
 	}
 
     });
@@ -24,12 +27,15 @@ var validateLogin = function(){
     var username = document.forms["login"]["username"].value;
     var pass1 = document.forms["login"]["password"].value;
     var alertmsg = "";
+
     if (username == ""){
 	alertmsg += "* Please enter your username.<br>";
     }
+
     if (pass1 == ""){
 	alertmsg += "* Please enter your password.<br>";
     }
+
     if (alertmsg != ""){
 	alertmsg += "<br>";
 	var error = document.getElementById("loginerror");
@@ -39,16 +45,20 @@ var validateLogin = function(){
 };
 
 var validateRegister = function(){
+    var success = true;
+    
     var username = document.forms["register"]["username"].value;
     var pass1 = document.forms["register"]["password"].value;
     var pass2 = document.forms["register"]["confirm_password"].value;
     var alertmsg = "";
-    if (usernameTaken(username)){
-	return false;
+    
+    if (! usernameAvailable(username)){
+	success = false;
     }
-    else if (username == ""){
+
+    if (username == ""){
 	alertmsg += "* Username required.<br>";
-    };
+    }
     
     if (pass1 == "" || pass2 == ""){
 	alertmsg += "* Both password fields required.<br>";
@@ -63,9 +73,9 @@ var validateRegister = function(){
 	alertmsg += "<br>";
 	var error = document.getElementById("regerror");
 	error.innerHTML = alertmsg;
-	return false;
+	success = false;
     };
-    
+    return success;
 };
 
 

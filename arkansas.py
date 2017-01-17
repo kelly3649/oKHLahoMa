@@ -46,7 +46,7 @@ def upload():
 def userCheck():
     username = request.args.get("text")
 
-    result = {'result': db.checkUsername(username)}
+    result = {'available': db.checkUsername(username)}
     
     return json.dumps(result)
         
