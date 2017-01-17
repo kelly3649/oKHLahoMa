@@ -27,6 +27,11 @@ def mainpage():
         return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
+@app.route("/upload")
+def upload():
+    if 'username' in session:
+        return render_template("logreg.html")
+
 @app.route("/checkUser")
 def userCheck():
     username = request.args.get("text")
@@ -47,7 +52,7 @@ def login():
         session['username'] = username;
         return render_template("master.html")
     else:
-        return render_template("logreg.html", error = "The credentials are wrong. Please try again.")
+        return render_template("logreg.html", loginmessage = "The credentials are wrong. Please try again.")
 
 @app.route("/register", methods=['POST'])
 def register():
@@ -57,19 +62,12 @@ def register():
     password = hashlib.sha1()
     password.update(request.form['password'])
     password = password.hexdigest()
-    if db.checkUsername(username):
-        message = "Success! Please log in with your credentials."
-        db.createUser(username,str(password))#,timestamp)
-        return render_template("logreg.html", error = message)
-    else:
-        message = "Username exists already. Please choose another username."
-        return render_template("logreg.html", error = message)
-
+    db.createUser(username,str(password))
+    
 @app.route("/logout")
 def logout():
     if 'username' in session:
         session.pop('username')
-        flash("Successfully logged out!")
         return redirect(url_for("mainpage"))
     return redirect(url_for("mainpage"))
       
