@@ -15,9 +15,7 @@ var usernameAvailable = function(username) {
 	    else {
 		place.innerHTML = "<br>";
 	    };
-	    return available;
 	}
-
     });
 };
 
@@ -36,9 +34,13 @@ var validateLogin = function(){
 	alertmsg += "* Please enter your password.<br>";
     }
 
-    if (alertmsg != ""){
+    var error = document.getElementById("loginerror");
+    
+    if (alertmsg == ""){
+	error.innerHTML = "";
+    }
+    else {
 	alertmsg += "<br>";
-	var error = document.getElementById("loginerror");
 	error.innerHTML = alertmsg;
 	return false;
     }
@@ -46,36 +48,43 @@ var validateLogin = function(){
 
 var validateRegister = function(){
     var success = true;
-    
+
     var username = document.forms["register"]["username"].value;
     var pass1 = document.forms["register"]["password"].value;
     var pass2 = document.forms["register"]["confirm_password"].value;
-    var alertmsg = "";
+
+
+    var error = document.getElementById("regerror");
+    error.innerHTML = "";
     
-    if (! usernameAvailable(username)){
+    var alertmsg = "";
+
+    usernameAvailable(username);
+
+    var unameTaken = document.getElementById("usernameTaken");
+    
+    if (unameTaken.innerHTML != "<br>"){
 	success = false;
     }
-
-    if (username == ""){
-	alertmsg += "* Username required.<br>";
-    }
     
+    if (username == ""){
+	error.innerHTML = error.innerHTML + "* Username required.<br>";
+	success = false;
+    }
+   
     if (pass1 == "" || pass2 == ""){
-	alertmsg += "* Both password fields required.<br>";
+	error.innerHTML = error.innerHTML + "* Both password fields required.<br>";
+	success = false;	
     }
     else if (pass1 != pass2){
-	alertmsg += "* Passwords do not match.<br>";
+	error.innerHTML = error.innerHTML + "* Passwords do not match.<br>";
+	success = false;	
     };
+
     if (pass1.length < 10){
-	alertmsg += "* Password must be at least 10 characters long.<br>";
+	error.innerHTML = error.innerHTML + "* Password must be at least 10 characters long.<br>";
+	success = false;	
     };
-    if (alertmsg != ""){
-	alertmsg += "<br>";
-	var error = document.getElementById("regerror");
-	error.innerHTML = alertmsg;
-	success = false;
-    };
+
     return success;
 };
-
-

@@ -1,0 +1,36 @@
+{% extends "master.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+  
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      {{ lastPage }}
+      {{ nextPage }}
+
+      {% for post in posts %}
+      <img src=&quot;{{photo_link}}&quot; alt="I tried"><br>
+      by {{ post['author'] }} on {{ post['upload_date'] }}<br>
+      <i>{{ post['caption'] }}<i><br>
+
+      <br><br>
+      {% endfor %}
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+  <!-- for the page numbers -->
+  <div class="row">
+    <div class="col-md-12">
+
+      
+      
+    </div>
+  </div>
+
+
+  
+</div>
+{% endblock %}

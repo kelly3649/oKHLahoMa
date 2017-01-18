@@ -7,14 +7,13 @@
   <div class="row">
 
     <div class="col-md-3">
-      <input id="noot" name="files[]" type="file" value="" style="display: block;"/>
-      <br>
-      
-      <button onclick="printPhoto()">Load File</button>
-      <div id="check">Wait</div>
-      <form action="/" method="POST">
+      <label class="btn-default btn">
+	<span id="file-label">Browse</span> <input class="file" id="noot" name="files[]" type="file" style="display: none;"/>
+      </label>
+      <br><br>
+      <form action="/noot" method="POST" id="datform">
 	<input id="lul" name="sneaky" type="hidden" value=""/>
-	<input name="submit" type="submit" value="Submit Photo"/>
+	<button class="btn btn-default" id="temporary" onclick="loadPhoto()">Load Photo</button>
       </form>
 
     </div>
@@ -22,6 +21,6 @@
   </div>
 </div>
 
-<script src="static/js/nootnoot.js"></script>
+<script src="static/js/postify.js"></script>
 {% endblock %}
 
