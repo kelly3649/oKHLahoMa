@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import sqlite3, requests
+import sqlite3
+import requests as req
 from utils import dbUtils as db
 import hashlib, os, datetime
 import json
@@ -21,11 +22,6 @@ def sanitize(string):
 
 @app.route("/")
 def mainpage():
-    page = 1
-    post = db.getSomePosts(10, 0)
-    return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
-    
-    
     if 'username' in session:
         page = 1
         post = db.getSomePosts(10, 0)
@@ -33,19 +29,29 @@ def mainpage():
         return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
-@app.route("/upload")
-def upload():
+@app.route("/page/<int:pg>")
+def page(pg):
     if 'username' in session:
-        caption = request.form['caption']
-        things = { "file" : request.form["image"], "upload_preset" : "bf17cjwp" }
-        upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
-        response = upload.json()
-        photo_name = response["public_id"]
-        url = response["secure_url"]
-        db.createPost(session['username'],url,caption)
-        return render_template("master.html", message = "Uploaded!")
+        post = db.getSomePosts(10, pg)
+        return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
+@app.route("/upload", methods = ["GET", "POST"])
+def upload():
+    if request.method == "GET":
+        return render_template("makepost.html")
+    else:
+        if 'username' in session:
+            caption = request.form['caption']
+            things = { "file" : request.form["image"], "upload_preset" : "bf17cjwp" }
+            upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
+            response = upload.json()
+            photo_name = response["public_id"]
+            url = response["secure_url"]
+            db.createPost(session['username'],url,caption)
+            return render_template("master.html", message = "Uploaded!")
+        return render_template("logreg.html")
+        
 @app.route("/checkUser")
 def userCheck():
     username = request.args.get("text")
@@ -77,6 +83,7 @@ def register():
     password.update(request.form['password'])
     password = password.hexdigest()
     db.createUser(username,str(password))
+    return redirect(url_for("mainpage"))
     
 @app.route("/logout")
 def logout():
