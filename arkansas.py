@@ -48,7 +48,8 @@ def upload():
             response = upload.json()
             photo_name = response["public_id"]
             url = response["secure_url"]
-            db.createPost(session['username'],url,caption)
+            print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: "
+            db.createPost(session['username'],url,"this is a test caption")
             return render_template("master.html", message = "Uploaded!")
         return render_template("logreg.html")
         

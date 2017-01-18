@@ -89,7 +89,7 @@ def createPost(username, image, caption):
         newID = hash(image) % ((sys.maxsize + 1))
         timenow = int(time.time())
         userinfo = getUserInfo(username)
-        if time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getPostsForUser(username)) == 0:
+        if time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0:
             print "new day"
         c.execute(query, (newID, userinfo['user_id'], image, caption, timenow))
         c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (timenow, username))
@@ -103,8 +103,8 @@ def createPost(username, image, caption):
         db.commit()
         #print "Today's Day: " + str(time.gmtime(timenow)[2]) + ", Last Upload's Day: " + str(time.gmtime(userinfo['last_upload'])[2])
         return True
-    except Exception:
-        print Exception
+    except Exception as whoops:
+        print whoops
         return False
 
 # Returns a dictified version of a post with a certain postID
