@@ -22,11 +22,6 @@ def sanitize(string):
 
 @app.route("/")
 def mainpage():
-    page = 1
-    post = db.getSomePosts(10, 0)
-    return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
-    
-    
     if 'username' in session:
         page = 1
         post = db.getSomePosts(10, 0)
@@ -34,7 +29,7 @@ def mainpage():
         return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
-@app.route("/page/<int: pg>"):
+@app.route("/page/<int:pg>")
 def page(pg):
     if 'username' in session:
         post = db.getSomePosts(10, pg)
@@ -88,6 +83,7 @@ def register():
     password.update(request.form['password'])
     password = password.hexdigest()
     db.createUser(username,str(password))
+    return redirect(url_for("mainpage"))
     
 @app.route("/logout")
 def logout():
