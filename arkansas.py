@@ -30,7 +30,15 @@ def mainpage():
 @app.route("/upload")
 def upload():
     if 'username' in session:
-        return render_template("logreg.html")
+        caption = request.form['caption']
+        things = { "file" : request.form["image"], "upload_preset" : "bf17cjwp" }
+        upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
+        response = upload.json()
+        photo_name = response["public_id"]
+        url = response["secure_url"]
+        db.createPost(session['username'],url,caption)
+        return render_template("master.html", message = "Uploaded!")
+    return render_template("logreg.html")
 
 @app.route("/checkUser")
 def userCheck():
