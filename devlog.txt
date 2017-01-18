@@ -57,3 +57,10 @@ fixed up the arkansas functions so that the ajax registration username validatio
 
 haleyZ -- 2017-01-17 14:00
 fixed weird ajax bugs!!
+
+danielM -- 2017-01-11 14:01
+Renamed some things in db code.
+Added getPages function to figure out how many pages we need.
+
+danielM -- 2017-01-11 22:34
+Did most of the upload page with js and all. Actual front-end should probably polish up the appearance but it looks pretty good right now.

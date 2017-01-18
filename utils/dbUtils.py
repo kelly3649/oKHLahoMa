@@ -142,4 +142,10 @@ def columns(tablename):
         stringdict[str(tuplet[1])] = str(tuplet[2])
     return stringdict
 
-
+def getPages(pageLength):
+    c.execute("SELECT COUNT(photo_link) FROM posts")
+    postcount = c.fetchone()[0]
+    if postcount % pageLength == 0 and postcount >= pageLength:
+        return postcount / pageLength
+    else:
+        return postcount / pageLength + 1
