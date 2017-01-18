@@ -83,7 +83,7 @@ def register():
     password.update(request.form['password'])
     password = password.hexdigest()
     db.createUser(username,str(password))
-    return redirect(url_for("mainpage"))
+    return render_template("logreg.html", successreg = "Account successfully created.")
     
 @app.route("/logout")
 def logout():
