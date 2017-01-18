@@ -72,3 +72,6 @@ Added getPages function to figure out how many pages we need.
 
 danielM -- 2017-01-11 22:34
 Did most of the upload page with js and all. Actual front-end should probably polish up the appearance but it looks pretty good right now.
+
+haleyZ -- 2017-01-18 2:21
+fixed the register ajax again, hopefully for the last time. made a template for the feed w/ a jinja loop for the posts.

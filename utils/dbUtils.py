@@ -126,6 +126,7 @@ def getSomePosts(number, page, user=None):
     postlist = []
     for item in c.fetchall():
         postlist.append(dictifyPost(item))
+    print postlist
     return postlist
 
 def tables():
