@@ -42,8 +42,8 @@ def upload():
         return render_template("makepost.html")
     else:
         if 'username' in session:
-            caption = request.form['caption']
-            things = { "file" : request.form["image"], "upload_preset" : "bf17cjwp" }
+            #caption = request.form['caption']
+            things = { "file" : request.form["sneaky"], "upload_preset" : "bf17cjwp" }
             upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
             response = upload.json()
             photo_name = response["public_id"]
