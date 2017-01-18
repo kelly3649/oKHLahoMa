@@ -33,19 +33,22 @@ def mainpage():
         return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
-@app.route("/upload")
+@app.route("/upload", methods = ["GET", "POST"])
 def upload():
-    if 'username' in session:
-        caption = request.form['caption']
-        things = { "file" : request.form["image"], "upload_preset" : "bf17cjwp" }
-        upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
-        response = upload.json()
-        photo_name = response["public_id"]
-        url = response["secure_url"]
-        db.createPost(session['username'],url,caption)
-        return render_template("master.html", message = "Uploaded!")
-    return render_template("logreg.html")
-
+    if request.method == "GET":
+        return render_template("createpost.html")
+    else:
+        if 'username' in session:
+            caption = request.form['caption']
+            things = { "file" : request.form["image"], "upload_preset" : "bf17cjwp" }
+            upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
+            response = upload.json()
+            photo_name = response["public_id"]
+            url = response["secure_url"]
+            db.createPost(session['username'],url,caption)
+            return render_template("master.html", message = "Uploaded!")
+        return render_template("logreg.html")
+        
 @app.route("/checkUser")
 def userCheck():
     username = request.args.get("text")
