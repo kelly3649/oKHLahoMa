@@ -44,7 +44,7 @@ def page(pg):
 @app.route("/upload", methods = ["GET", "POST"])
 def upload():
     if request.method == "GET":
-        return render_template("createpost.html")
+        return render_template("makepost.html")
     else:
         if 'username' in session:
             caption = request.form['caption']
