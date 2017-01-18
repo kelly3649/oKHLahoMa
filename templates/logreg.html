@@ -1,11 +1,21 @@
 {% extends "master.html" %}
 
+{% block logout %}
+{% endblock %}
+
 {% block body %}
 
 <div class="container-fluid">
-  
+  {% if successreg is defined %}  
   <div class="row">
+    <div class="alert alert-success">
+      {{ successreg }}
+    </div>
+    
+  </div>
 
+  {% endif %}
+  <div class="row"
     <div class="col-md-3"></div>
     <div class="col-md-3">
 
@@ -20,7 +30,6 @@
             <input name="username" type="text" class="form-control" id="loginun" placeholder="Username">
             <br>
             <input name="password" type="password" class="form-control" id="loginpw" placeholder="Password">
-            <br>
 	    <div id="loginerror" class="logreg-error">
 	      {% if loginmessage is defined %}
 	      {{ loginmessage }}
