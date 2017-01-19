@@ -36,6 +36,14 @@ def page(pg):
         return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
+@app.route("/profile") #what u see of your own profile, can be edited by you
+def profile():
+    if request.method == "GET":
+        return render_template("profile.html")
+    else:
+        return "temporary string for testing"
+    
+
 @app.route("/upload", methods = ["GET", "POST"])
 def upload():
     if request.method == "GET":
