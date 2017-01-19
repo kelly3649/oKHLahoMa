@@ -49,6 +49,10 @@ def upload():
             photo_name = response["public_id"]
             url = response["secure_url"]
             print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: " + caption
+
+            
+            imagename = "/" + response["public_id"] + response["format"]
+            
             db.createPost(session['username'],url, caption)
             return redirect(url_for("mainpage"))
         return render_template("logreg.html")
