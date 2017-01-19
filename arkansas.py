@@ -71,7 +71,7 @@ def login():
     password = password.hexdigest()
     if db.checkLogin(username, password):
         session['username'] = username;
-        return render_template("master.html")
+        return redirect(url_for("mainpage"))
     else:
         return render_template("logreg.html", loginmessage = "The credentials are wrong. Please try again.")
 
