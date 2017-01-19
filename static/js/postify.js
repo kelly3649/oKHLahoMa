@@ -2,13 +2,14 @@ var filenoodle = document.getElementById("noot");
 var labelnoodle = document.getElementById("file-label");
 
 filenoodle.onchange = function() {
-    console.log("DOG");
+    loadPhoto();
     labelnoodle.innerHTML = this.value.substr(12);
+    filethings = document.getElementById("file-things");
+
 };
 
 var loadPhoto = function() {
     var formnoodle = document.getElementById("datform");
-    formnoodle.removeChild(document.getElementById("temporary"));
     var file = document.getElementById("noot").files[0];
     var reader = new FileReader();
     reader.onload = function(imgfile) {
@@ -16,7 +17,10 @@ var loadPhoto = function() {
 	var submitButton = document.createElement("INPUT");
 	submitButton.setAttribute("type", "submit");
 	submitButton.className += "btn btn-default";
-	formnoodle.appendChild(submitButton);
+	if (formnoodle.childElementCount < 3) {
+	    formnoodle.appendChild(submitButton);
+	}
+	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
     };
     reader.readAsDataURL(file);
 };

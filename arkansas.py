@@ -42,15 +42,15 @@ def upload():
         return render_template("makepost.html")
     else:
         if 'username' in session:
-            #caption = request.form['caption']
+            caption = request.form['caption']
             things = { "file" : request.form["sneaky"], "upload_preset" : "bf17cjwp" }
             upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
             response = upload.json()
             photo_name = response["public_id"]
             url = response["secure_url"]
-            print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: "
-            db.createPost(session['username'],url,"this is a test caption")
-            return render_template("master.html", message = "Uploaded!")
+            print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: " + caption
+            db.createPost(session['username'],url, caption)
+            return redirect(url_for("mainpage"))
         return render_template("logreg.html")
         
 @app.route("/checkUser")

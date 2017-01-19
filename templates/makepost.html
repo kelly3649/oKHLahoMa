@@ -7,13 +7,17 @@
   <div class="row">
 
     <div class="col-md-3">
+      <div id="file-things">
       <label class="btn-default btn">
 	<span id="file-label">Browse</span> <input class="file" id="noot" name="files[]" type="file" style="display: none;"/>
       </label>
+      <img id="thatimage" src>
+      </div>
       <br><br>
       <form action="/upload" method="POST" id="datform">
+	<input name="caption" type="text"/>
 	<input id="lul" name="sneaky" type="hidden" value=""/>
-	<button class="btn btn-default" id="temporary" onclick="loadPhoto()">Load Photo</button>
+	<!--<button class="btn btn-default" id="temporary" onclick="loadPhoto()">Load Photo</button>-->
       </form>
 
     </div>
