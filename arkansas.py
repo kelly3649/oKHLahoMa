@@ -20,6 +20,7 @@ def sanitize(string):
     ret = string.replace("'","''")
     return ret
 
+# Returns to login if not logged in, otherwise, returns the first page of pictures. 
 @app.route("/")
 def mainpage():
     if 'username' in session:
@@ -29,6 +30,7 @@ def mainpage():
         return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
+# Goes to the specified page of posts
 @app.route("/page/<int:pg>")
 def page(pg):
     if 'username' in session:
@@ -36,18 +38,27 @@ def page(pg):
         return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
-@app.route("/profile") #what u see of your own profile, can be edited by you
-def profile():
-    if request.method == "GET":
+# Your profile page, or other users profile pages. Will allow you to edit your own.
+@app.route("/profile/<string:user>")
+def profile(user):
+    if 'username' not in session:
         return render_template("profile.html")
     else:
-        return "temporary string for testing"
-    
-
+        if session['username'] == user:
+            condition = True
+        else:
+            condition = False
+        userinfo = getuserInfo(user)
+        return render_template("profile.html", ownprofile = condition, profile = user)
+        
+# Uploads a post with a chosen filter according to the date/time.
 @app.route("/upload", methods = ["GET", "POST"])
 def upload():
     if request.method == "GET":
-        return render_template("makepost.html")
+        if 'username' in session:
+            return render_template("makepost.html")
+        else:
+            return redirect(url_for("mainpage"))
     else:
         if 'username' in session:
             caption = request.form['caption']
@@ -60,11 +71,13 @@ def upload():
 
             
             imagename = "/" + response["public_id"] + response["format"]
+            time = db.getTime()
             
             db.createPost(session['username'],url, caption)
             return redirect(url_for("mainpage"))
         return render_template("logreg.html")
-        
+
+# Ajax extension for checking the user w/o submitting the form.
 @app.route("/checkUser")
 def userCheck():
     username = request.args.get("text")
@@ -72,7 +85,8 @@ def userCheck():
     result = {'available': db.checkUsername(username)}
     
     return json.dumps(result)
-        
+
+# Logs the user in successfully if the credentials are correct
 @app.route("/login", methods=['POST'])
 def login():
     if 'username' in session:
@@ -87,6 +101,8 @@ def login():
     else:
         return render_template("logreg.html", loginmessage = "The credentials are wrong. Please try again.")
 
+    
+# Registers the user. The checking procedure is done in Ajax/JS
 @app.route("/register", methods=['POST'])
 def register():
     if('username' in session):
@@ -97,7 +113,8 @@ def register():
     password = password.hexdigest()
     db.createUser(username,str(password))
     return render_template("logreg.html", successreg = "Account successfully created.")
-    
+
+# Logs the user out.
 @app.route("/logout")
 def logout():
     if 'username' in session:
