@@ -80,6 +80,14 @@ def dictifyPost(items):
     info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])) }
     return info
 
+# Checks if a user has posted today
+# Takes Args: STRING username
+# Returns: BOOLEAN
+def canPost(username):
+    timenow = int(time.time())
+    userinfo = getUserInfo(username)
+    return time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
+
 # Creates a post. Returns whether the post is created succesfully or not
 # Takes Args: STRING username, STRING image (represents image url), STRING caption
 # Returns: BOOLEAN
@@ -89,7 +97,7 @@ def createPost(username, image, caption):
         newID = hash(image) % ((sys.maxsize + 1))
         timenow = int(time.time())
         userinfo = getUserInfo(username)
-        if time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0:
+        if canPost(username):
             print "new day"
         c.execute(query, (newID, userinfo['user_id'], image, caption, timenow))
         c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (timenow, username))
@@ -126,7 +134,7 @@ def getSomePosts(number, page, user=None):
     postlist = []
     for item in c.fetchall():
         postlist.append(dictifyPost(item))
-    print postlist
+    #print postlist
     return postlist
 
 def tables():
@@ -150,3 +158,7 @@ def getPages(pageLength):
         return postcount / pageLength
     else:
         return postcount / pageLength + 1
+
+def getTime():
+    timenow = time.localtime()
+    return { "year":timenow[0], "month":timenow[1], "day":timenow[2], "hour":timenow[3], "minute":timenow[4], "second":timenow[5] }
