@@ -35,7 +35,7 @@ def mainpage():
 def page(pg):
     if 'username' in session:
         post = db.getSomePosts(10, pg)
-        return render_template("master.html", posts = post, lastPage = page-1, nextPage = page+1)
+        return render_template("master.html", posts = post, lastPage = pg-1, nextPage = pg+1)
     return render_template("logreg.html")
 
 # Your profile page, or other users profile pages. Will allow you to edit your own.
