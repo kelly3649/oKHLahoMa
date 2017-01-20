@@ -84,3 +84,6 @@ realized profile button leads to nowhere, so added profile.html and its route
 
 danielM -- 2017-01-20 13:37
 added getTime in dbUtils
+
+edmondL -- 2017-1-20 13:56
+added comments to arkansas.py. Began procedural generation of filters. Fixed the page generation. Fixed some bugs related to accessing upload without being required to log in.
