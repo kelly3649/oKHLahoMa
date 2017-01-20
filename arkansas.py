@@ -34,8 +34,11 @@ def mainpage():
 @app.route("/page/<int:pg>")
 def page(pg):
     if 'username' in session:
-        post = db.getSomePosts(10, pg)
-        return render_template("master.html", posts = post, lastPage = pg-1, nextPage = pg+1)
+        if pg >= 1:
+            post = db.getSomePosts(10, pg-1)
+        else:
+            return redirect(url_for("page", pg=1))
+        return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1)
     return render_template("logreg.html")
 
 # Your profile page, or other users profile pages. Will allow you to edit your own.
