@@ -1,0 +1,10 @@
+this is a doc to keep track for me, the PM:
+
+make sure the full url shows up on upload 
+*************profile needs to be done
+spotify code should be implemented
+***navbar needs scaling 
+***make sure only posting once a day
+**if image too big scale it
+*******turn debug to false before last commit
+max Page
