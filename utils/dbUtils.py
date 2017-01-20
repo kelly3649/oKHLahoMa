@@ -150,3 +150,7 @@ def getPages(pageLength):
         return postcount / pageLength
     else:
         return postcount / pageLength + 1
+
+def getTime():
+    timenow = time.localtime()
+    return { "year":timenow[0], "month":timenow[1], "day":timenow[2], "hour":timenow[3], "minute":timenow[4], "second":timenow[5] }

@@ -81,3 +81,6 @@ realized I had copied and pasted my devlogs too hard. fixed the dates. Also fixe
 
 kellyW -- 2017-01-19 12:59
 realized profile button leads to nowhere, so added profile.html and its route
+
+danielM -- 2017-01-20 13:37
+added getTime in dbUtils
