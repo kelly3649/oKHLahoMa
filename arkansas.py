@@ -25,7 +25,7 @@ def mainpage():
     if 'username' in session:
         page = 1
         post = db.getSomePosts(10, 0)
-        print post
+        #print post
         return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("logreg.html")
 
