@@ -8,7 +8,7 @@
     <!--<div class="col-md-3"></div>-->
     <div class="col-md-6">
       {% for post in posts %}
-      <img class="img_fluid" src={{ post['photo_link'] }}; alt="I tried"><br>
+      <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
       by {{ post['author'] }} on {{ post['upload_date'] }}<br>
       <i>{{ post['caption'] }}<i><br>
 
@@ -21,8 +21,8 @@
   <!-- for the page numbers -->
   <div class="row">
     <div class="col-md-12">
-      {{ lastPage }}
-      {{ nextPage }}
+      <a href="/page/{{ lastPage }}">{{ lastPage }}</a>
+      <a href="/page/{{ nextPage }}">{{ nextPage }}</a>
     </div>
   </div>
 
