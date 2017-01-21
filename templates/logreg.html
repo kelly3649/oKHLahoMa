@@ -1,5 +1,14 @@
 {% extends "master.html" %}
 
+{% block home %}
+{% endblock %}
+
+{% block upload %}
+{% endblock %}
+
+{% block profile %}
+{% endblock %}
+
 {% block logout %}
 {% endblock %}
 
@@ -11,69 +20,66 @@
     <div class="alert alert-success">
       {{ successreg }}
     </div>
-    
   </div>
-
   {% endif %}
-  <div class="row"
+
+  
+  <div class="row">
     <div class="col-md-3"></div>
-    <div class="col-md-3">
+       <div class="col-md-3">
 
-      <div class="panel panel-default">
+	 <div class="panel panel-default">
 
-        <div class="panel-heading">
-          <h2 class="panel-title">Login</h2>
-        </div>
+           <div class="panel-heading">
+             <h2 class="panel-title">Login</h2>
+           </div>
 
-        <div class="panel-body">
-          <form name="login" action="/login" onsubmit="return validateLogin()" method="POST">
-            <input name="username" type="text" class="form-control" id="loginun" placeholder="Username">
-            <br>
-            <input name="password" type="password" class="form-control" id="loginpw" placeholder="Password">
-	    <div id="loginerror" class="logreg-error">
-	      {% if loginmessage is defined %}
-	      {{ loginmessage }}
-	      <br>
-	      {% endif %}
-	      <br>
-	    </div>
-            <input type="submit" class="btn btn-primary" id="loginsubmit" value="Login">
-          </form>
-        </div>
+           <div class="panel-body">
+             <form name="login" action="/login" onsubmit="return validateLogin()" method="POST">
+               <input name="username" type="text" class="form-control" id="loginun" placeholder="Username">
+               <br>
+               <input name="password" type="password" class="form-control" id="loginpw" placeholder="Password">
+	       <div id="loginerror" class="logreg-error">
+		 {% if loginmessage is defined %}
+		 {{ loginmessage }}
+		 <br>
+		 {% endif %}
+		 <br>
+	       </div>
+               <input type="submit" class="btn btn-primary" id="loginsubmit" value="Login">
+             </form>
+           </div>
 
-      </div>
+	 </div>
 
-    </div>
-    <div class="col-md-3">
-      <div class="panel panel-default">
-	<div class="panel-heading">
-          <h2 class="panel-title">Register</h2>
-        </div>
-        <div class="panel-body">
-          <form name="register" action="/register" onsubmit="return validateRegister()" method="POST">
-	    <input name="username" type="text" class="form-control" placeholder="Username">
-	    <div id="usernameTaken" class="logreg-error">
-	    <br>
-	    </div>
-	    <input name="password" type="password" class="form-control" placeholder="Password">
-	    <br>
-	    <input name="confirm_password" type="password" class="form-control" placeholder="Confirm password">
-	    <br>
-	    <div id="regerror" class="logreg-error">
-	      {% if regmessage is defined %}
-	      {{ regmessage }}
-	      <br>
-	      {% endif %}
-	    </div>
-	    <input type="submit" class="btn btn-primary" id="regsubmit" value="Register">
-          </form>
-	</div>
-      </div>
-    </div>
-    
-    <div class="col-md-3">
-    </div>
-
+       </div>
+       <div class="col-md-3">
+	 <div class="panel panel-default">
+	   <div class="panel-heading">
+             <h2 class="panel-title">Register</h2>
+           </div>
+           <div class="panel-body">
+             <form name="register" action="/register" onsubmit="return validateRegister()" method="POST">
+	       <input name="username" type="text" class="form-control" placeholder="Username">
+	       <div id="usernameTaken" class="logreg-error">
+		 <br>
+	       </div>
+	       <input name="password" type="password" class="form-control" placeholder="Password">
+	       <br>
+	       <input name="confirm_password" type="password" class="form-control" placeholder="Confirm password">
+	       <br>
+	       <div id="regerror" class="logreg-error">
+		 {% if regmessage is defined %}
+		 {{ regmessage }}
+		 <br>
+		 {% endif %}
+	       </div>
+	       <input type="submit" class="btn btn-primary" id="regsubmit" value="Register">
+             </form>
+	   </div>
+	 </div>
+       </div>
+       <div class="col-md-3"></div>
   </div>
 </div>
 

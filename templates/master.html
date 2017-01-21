@@ -13,15 +13,19 @@
       <div class="container-fluid">
 
 	<div class="navbar-header">
-	  <a class="navbar-brand" href="#">Pic of the Day</a>
+	  <a class="navbar-brand" href="/">Pic of the Day</a>
 	</div>
 
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse" id="top-nav
 						  ">
 	  <ul class="nav navbar-nav">
+	    {% block home %}
             <li><a href="/">Home</a></li>
+	    {% endblock %}
+	    {% block upload %}
 	    <li><a href="/upload">Upload</a></li>
+	    {% endblock %}
 	  </ul>
 
 
@@ -35,7 +39,9 @@
 		    <button type="submit" class="btn btn-default">Submit</button>
 		  </form>
 		  -->
+	    {% block profile %}
 	    <li><a href="#">Profile</a></li>
+	    {% endblock %}
 	    {% block logout %}
             <li><a href="/logout">Logout</a></li>
 	    {% endblock %}

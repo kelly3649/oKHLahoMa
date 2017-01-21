@@ -28,6 +28,10 @@ def mainpage():
         post = db.getSomePosts(10, 0)
         #print post
         return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
+    return render_template("landing.html")
+
+@app.route("/logreg")
+def logreg():
     return render_template("logreg.html")
 
 # Goes to the specified page of posts
@@ -39,13 +43,13 @@ def page(pg):
         else:
             return redirect(url_for("page", pg=1))
         return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1)
-    return render_template("logreg.html")
+    return redirect(url_for("logreg"))
 
 # Your profile page, or other users profile pages. Will allow you to edit your own.
 @app.route("/profile/<string:user>")
 def profile(user):
     if 'username' not in session:
-        return render_template("profile.html")
+        return redirect(url_for("mainpage"))
     else:
         if session['username'] == user:
             condition = True
@@ -78,7 +82,7 @@ def upload():
             
             db.createPost(session['username'],url, caption)
             return redirect(url_for("mainpage"))
-        return render_template("logreg.html")
+        return redirect(url_for("mainpage"))
 
 # Ajax extension for checking the user w/o submitting the form.
 @app.route("/checkUser")
