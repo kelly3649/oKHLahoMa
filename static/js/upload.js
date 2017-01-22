@@ -17,6 +17,7 @@ var loadPhoto = function() {
 
 	var caption = document.createElement("INPUT");
 	caption.setAttribute("id", "caption");
+	caption.setAttribute("name", "caption");
 	caption.setAttribute("type", "text");
 	caption.setAttribute("placeholder", "caption");
 

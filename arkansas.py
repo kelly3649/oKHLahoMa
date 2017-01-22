@@ -59,18 +59,13 @@ def profile(user):
         return render_template("profile.html", ownprofile = condition, profile = user)
         
 # Uploads a post with a chosen filter according to the date/time.
-@app.route("/upload", methods = ["GET", "POST"])
+@app.route("/upload", methods = ["POST"])
 def upload():
-    if request.method == "GET":
-        if 'username' in session:
-            return render_template("makepost.html")
-        else:
-            return redirect(url_for("mainpage"))
-    else:
+    if request.method == "POST":
         if 'username' in session:
             caption = request.form['caption']
             things = { "file" : request.form["sneaky"], "upload_preset" : "bf17cjwp" }
-            upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/auto/upload", data=things)
+            upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/image/upload", data=things)
             response = upload.json()
             photo_name = response["public_id"]
             url = response["secure_url"]
