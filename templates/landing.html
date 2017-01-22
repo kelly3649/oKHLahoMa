@@ -4,24 +4,42 @@
   <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css">
   <link type="text/css" rel="stylesheet" href="/static/css/landing.css">
   <link href="//fonts.googleapis.com/css?family=Sofia" rel="stylesheet">
-
+  <link href="//fonts.googleapis.com/css?family=Arsenal" rel="stylesheet">
+  
 </head>
 
 <body>
-  <div class="overlay">
-  </div>
-  <div class="row">  
-    <div class="container-fluid" id="content">
-      <h1 id="name">
-	Pic of the Day
-      </h1>
-      <p>
-	A photo-sharing platform for those who understand that less is more.
-      </p>
-      <label class="button">
-	<a href="/logreg">Embark on your photo journey</a>
-      </label>
+  <div class="row">
+    <div class="overlay"></div>
+    <div class="container-fluid" id="p1">
+      <div id="intro">
+	<h1 id="name">
+	  Pic of the Day
+	</h1>
+	<p>
+	  A photo-sharing platform for those who understand that less is more.
+	</p>
+	<label class="button">
+	  <a href="/logreg">Embark on your photo journey</a>
+	</label>
+	<br>
+	<a href="#about" id="linkToAbout">...what is Pic of the Day?</a>
+      </div>
     </div>
-  </div>
+    
+    <div class="container-fluid" id="p2">
+      <div id="about">
+	<h2>A photo a day keeps the amnesia away.</h2>
+	<p>Team oKHLahoMa presents Pic of the Day, a photo blog website designed for photo-enthusiasts who understand the meaning of less is more. Users may upload a maximum of one photo a day, which can be filtered with the day’s featured filter. The goal is to upload each day and build up the streak, and achievements are awarded upon reaching certain streak benchmarks.</p>
 
+	<p>Users can follow each other to receive their photos on their Feeds. Alternatively, users can visit a user’s profile page to see all of the user’s posts.</p>
+	<p style="text-align: center; font-weight:bold;">
+	  <a href="/logreg">Sounds cool, sign me up!</a>
+	</p>
+      </div>
+      
+    </div>
+    
+  </div>
+<script src="/static/js/landing.js">
 </body>
