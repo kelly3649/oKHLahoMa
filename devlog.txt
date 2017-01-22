@@ -95,3 +95,6 @@ made the landing page, changed the routes to incorporate the landing page. Fixed
 
 haleyZ -- 2017-1-21 21:59
 added an about section to the landing page. Fixed small bug in logreg where the spacing of the login section would change after validating login. Added success message for successful logout.
+
+haleyZ -- 2017-1-22 00:31
+put the upload page onto the feed as a modal popup
