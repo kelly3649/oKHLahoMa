@@ -119,15 +119,16 @@ def register():
     password.update(request.form['password'])
     password = password.hexdigest()
     db.createUser(username,str(password))
-    return render_template("logreg.html", successreg = "Account successfully created.")
+    return render_template("logreg.html", successmsg = "Account successfully created.")
 
 # Logs the user out.
 @app.route("/logout")
 def logout():
     if 'username' in session:
         session.pop('username')
-        return redirect(url_for("mainpage"))
+        return render_template("logreg.html", successmsg="You have been logged out.")
     return redirect(url_for("mainpage"))
+
       
 if __name__ == "__main__":
     app.debug = True

@@ -37,7 +37,7 @@ var validateLogin = function(){
     var error = document.getElementById("loginerror");
     
     if (alertmsg == ""){
-	error.innerHTML = "";
+	error.innerHTML = "<br>";
     }
     else {
 	alertmsg += "<br>";
