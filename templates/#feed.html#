@@ -43,7 +43,7 @@
     <div class="modal-content">
       
       <span class="close">&times;</span>
-      <br>
+
       <div id="file-things">
 	<label class="btn-default btn">
 	  <span id="file-label">Browse</span>
@@ -52,7 +52,7 @@
 	<br>
 	<img id="thatimage" class="img-responsive">
       </div>
-      <br>
+      <br><br>
       <form action="/upload" method="POST" id="datform">
 	<input id="lul" name="sneaky" type="hidden" value=""/>
       </form>

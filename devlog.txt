@@ -98,3 +98,6 @@ added an about section to the landing page. Fixed small bug in logreg where the 
 
 haleyZ -- 2017-1-22 00:31
 put the upload page onto the feed as a modal popup
+
+haleyZ -- 2017-1-23 14:02
+template for the profile. linked up user's own profile.
