@@ -42,7 +42,7 @@ def page(pg):
             post = db.getSomePosts(10, pg-1)
         else:
             return redirect(url_for("page", pg=1))
-        return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1)
+        return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']) )
     return redirect(url_for("logreg"))
 
 # Your profile page, or other users profile pages. Will allow you to edit your own.
@@ -80,8 +80,8 @@ def upload():
             imagename = "/" + response["public_id"] + response["format"]
             time = db.getTime()
             
-            db.createPost(session['username'],url, caption)
-            return redirect(url_for("mainpage"))
+            if db.createPost(session['username'],url, caption):
+                return redirect(url_for("mainpage"))
         return redirect(url_for("mainpage"))
 
 # Ajax extension for checking the user w/o submitting the form.
