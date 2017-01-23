@@ -4,8 +4,9 @@ var labelnoodle = document.getElementById("file-label");
 
 filenoodle.onchange = function() {
     loadPhoto();
-    labelnoodle.innerHTML = this.value.substr(12);
+    //labelnoodle.innerHTML = this.value.substr(12);
     filethings = document.getElementById("file-things");
+    labelnoodle.innerHTML = "Browse";
 };
 
 var loadPhoto = function() {
@@ -32,8 +33,10 @@ var loadPhoto = function() {
 	    formnoodle.appendChild(submitButton);
 	}
 	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
+
     };
     reader.readAsDataURL(file);
+
 };
 
 var clear = function(){
@@ -69,6 +72,7 @@ span.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
+	clear();
         modal.style.display = "none";
     }
 }
