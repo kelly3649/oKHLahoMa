@@ -56,7 +56,12 @@ def profile(user):
         else:
             condition = False
         userinfo = db.getUserInfo(user)
-        return render_template("profile.html", ownprofile = condition, profile = user)
+ #       postList = db.
+        return render_template("profile.html", ownprofile = condition, username = user)
+
+@app.route("/myProfile")
+def myProfile():
+    return profile(session['username'])
         
 # Uploads a post with a chosen filter according to the date/time.
 @app.route("/upload", methods = ["POST"])
