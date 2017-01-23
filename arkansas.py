@@ -55,7 +55,7 @@ def profile(user):
             condition = True
         else:
             condition = False
-        userinfo = getuserInfo(user)
+        userinfo = db.getUserInfo(user)
         return render_template("profile.html", ownprofile = condition, profile = user)
         
 # Uploads a post with a chosen filter according to the date/time.
