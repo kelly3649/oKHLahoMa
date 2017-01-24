@@ -4,6 +4,7 @@ import requests as req
 from utils import dbUtils as db
 import hashlib, os, datetime
 import json
+import random
 
 app = Flask(__name__)
 #creates instance of Flask and passes env variable __name__
@@ -42,7 +43,7 @@ def page(pg):
             post = db.getSomePosts(10, pg-1)
         else:
             return redirect(url_for("page", pg=1))
-        return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']) )
+        return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
     return redirect(url_for("logreg"))
 
 # Your profile page, or other users profile pages. Will allow you to edit your own.
@@ -56,7 +57,7 @@ def profile(user):
         else:
             condition = False
         userinfo = db.getUserInfo(user)
- #       postList = db.
+        postList = db.getSomePosts(10000, 0, user)
         return render_template("profile.html", ownprofile = condition, username = user)
 
 @app.route("/myProfile")
@@ -70,18 +71,33 @@ def upload():
         if 'username' in session:
             caption = request.form['caption']
             things = { "file" : request.form["sneaky"], "upload_preset" : "bf17cjwp" }
+            
             upload = req.post("https://api.cloudinary.com/v1_1/dhan3kbrs/image/upload", data=things)
             response = upload.json()
             photo_name = response["public_id"]
             url = response["secure_url"]
+
+            imagename = "/" + response["public_id"] + "." + response["format"]
+            
             print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: " + caption
 
-            
-            imagename = "/" + response["public_id"] + response["format"]
             time = db.getTime()
+
+            improvement = ["e_auto_contrast", "e_improve", "e_auto_color", "e_fill_light"]
             
-            if db.createPost(session['username'],url, caption):
+            filters = ["e_art:al_dente","e_art:athena","e_art:audrey","e_art:aurora","e_art:daguerre","e_art:eucalyptus","e_art:fes","e_art:frost","e_art:hairspray","e_art:hokusai","e_art:incognito","e_art:linen","e_art:peacock","e_art:primavera","e_art:quartz","e_art:red_rock","e_art:refresh","e_art:sizzle","e_art:sonnet","e_art:ukulele","e_art:zorro"]
+
+            if (random.randint(0,100) < 15):
+                option = "e_oil_paint:50"
+            else: option = ""
+            
+            effects = ["e_blur:100", "e_sharpen:100", "e_vignette"]
+
+            new_url = "https://res.cloudinary.com/dhan3kbrs/image/upload/" + "/" + improvement[time['second'] % 4] + "/" + filters[time['day'] % 21] + "/" + option + "/" + effects[time['minute'] % 3] + imagename
+            if db.canPost(session['username']):
+                db.createPost(session['username'], new_url, caption)
                 return redirect(url_for("mainpage"))
+            else return redirect(url_for("mainpage"))
         return redirect(url_for("mainpage"))
 
 # Ajax extension for checking the user w/o submitting the form.
