@@ -2,6 +2,7 @@
 
 {% block head %}
 <link type="text/css" rel="stylesheet" href="/static/css/upload.css">
+<title>{{pagename}}</title>
 {% endblock %}
 
 {% block body %}
@@ -15,7 +16,7 @@
     <div class="col-md-6">
       {% for post in posts %}
       <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
-      by {{ post['author'] }} on {{ post['upload_date'] }}<br>
+      by <a href="/profile/{{post['author']}}">{{ post['author'] }}</a> on {{ post['upload_date'] }}<br>
       <i>{{ post['caption'] }}<i><br>
 
 	  <br><br>
@@ -32,8 +33,6 @@
   </div>
 
   <!-- end of posts-->
-
-
   
   <!-- modal stuff for upload button "popup" -->
   <!-- everything related to modal is code written by w3schools -->
@@ -60,34 +59,8 @@
     </div>
 
     <!-- end of modal stuff -->
-
-
-
-
+  </div>
   
 </div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
 {% endblock %}

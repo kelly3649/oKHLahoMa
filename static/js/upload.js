@@ -28,8 +28,16 @@ var loadPhoto = function() {
 	submitButton.setAttribute("value", "upload");
 	submitButton.className += "btn btn-default";
 
-	if (formnoodle.childElementCount < 3) {
+	var filterCheckbox = document.createElement("INPUT");
+	filterCheckbox.setAttribute("id", "filterCheckbox");
+	filterCheckbox.setAttribute("type", "checkbox");
+	filterCheckbox.setAttribute("name", "filter");
+	filterCheckbox.setAttribute("value", "filter");
+
+	
+	if (formnoodle.childElementCount < 4) {
 	    formnoodle.appendChild(caption);
+	    formnoodle.appendChild(filterCheckbox);
 	    formnoodle.appendChild(submitButton);
 	}
 	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
@@ -41,11 +49,13 @@ var loadPhoto = function() {
 
 var clear = function(){
     var formnoodle = document.getElementById("datform");
-    if (formnoodle.childElementCount >= 3) {
+    if (formnoodle.childElementCount >= 4) {
 	var caption = document.getElementById("caption");
 	caption.parentNode.removeChild(caption);
 	var submitButton = document.getElementById("submitButton");
 	submitButton.parentNode.removeChild(submitButton);
+	var filterCheckbox = document.getElementById("filterCheckbox");
+	filterCheckbox.parentNode.removeChild(filterCheckbox);
     }
     document.getElementById("lul").value = "";
     document.getElementById("thatimage").setAttribute("src", "");

@@ -28,7 +28,7 @@ def mainpage():
         page = 1
         post = db.getSomePosts(10, 0)
         #print post
-        return render_template("feed.html", posts = post, lastPage = page-1, nextPage = page+1)
+        return render_template("feed.html",pagename="Home", canPost = db.canPost(session["username"]), posts = post, lastPage = page-1, nextPage = page+1)
     return render_template("landing.html")
 
 @app.route("/logreg")
@@ -43,12 +43,16 @@ def page(pg):
             post = db.getSomePosts(10, pg-1)
         else:
             return redirect(url_for("page", pg=1))
-        return render_template("feed.html", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
+        return render_template("feed.html", pagename="Home", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
     return redirect(url_for("logreg"))
 
-# Your profile page, or other users profile pages. Will allow you to edit your own.
 @app.route("/profile/<string:user>")
 def profile(user):
+    return profilepage(user, 1)
+
+# Your profile page, or other users profile pages. Will allow you to edit your own.
+@app.route("/profile/<string:user>/<int:pg>")
+def profilepage(user, pg):
     if 'username' not in session:
         return redirect(url_for("mainpage"))
     else:
@@ -57,8 +61,8 @@ def profile(user):
         else:
             condition = False
         userinfo = db.getUserInfo(user)
-        postList = db.getSomePosts(10000, 0, user)
-        return render_template("profile.html", ownprofile = condition, username = user)
+        postList = db.getSomePosts(10, pg-1, user)
+        return render_template("profile.html", ownprofile = condition, username = user, posts = postList, info = userinfo)
 
 @app.route("/myProfile")
 def myProfile():
@@ -69,6 +73,9 @@ def myProfile():
 def upload():
     if request.method == "POST":
         if 'username' in session:
+            print "KEYS IN REQUEST:"
+            for item in request.form:
+                print item
             caption = request.form['caption']
             things = { "file" : request.form["sneaky"], "upload_preset" : "bf17cjwp" }
             
@@ -76,28 +83,34 @@ def upload():
             response = upload.json()
             photo_name = response["public_id"]
             url = response["secure_url"]
-
-            imagename = "/" + response["public_id"] + "." + response["format"]
+            autofilter = "filter" in request.form
+            print "FILTER IS: " + str(autofilter)
+            imagename = "/" + response["public_id"] #+ "." + response["format"]
             
             print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: " + caption
 
-            time = db.getTime()
+            if autofilter:
+                time = db.getTime()
 
-            improvement = ["e_auto_contrast", "e_improve", "e_auto_color", "e_fill_light"]
+                improvement = ["e_auto_contrast", "e_improve", "e_auto_color", "e_fill_light"]
             
-            filters = ["e_art:al_dente","e_art:athena","e_art:audrey","e_art:aurora","e_art:daguerre","e_art:eucalyptus","e_art:fes","e_art:frost","e_art:hairspray","e_art:hokusai","e_art:incognito","e_art:linen","e_art:peacock","e_art:primavera","e_art:quartz","e_art:red_rock","e_art:refresh","e_art:sizzle","e_art:sonnet","e_art:ukulele","e_art:zorro"]
-
-            if (random.randint(0,100) < 15):
-                option = "e_oil_paint:50"
-            else: option = ""
+                filters = ["e_art:al_dente","e_art:athena","e_art:audrey","e_art:aurora","e_art:daguerre","e_art:eucalyptus","e_art:fes","e_art:frost","e_art:hairspray","e_art:hokusai","e_art:incognito","e_art:linen","e_art:peacock","e_art:primavera","e_art:quartz","e_art:red_rock","e_art:refresh","e_art:sizzle","e_art:sonnet","e_art:ukulele","e_art:zorro"]
+                
+                if (random.randint(0,100) < 15):
+                    option = "e_oil_paint:50/"
+                else: option = ""
             
-            effects = ["e_blur:100", "e_sharpen:100", "e_vignette"]
+                effects = ["e_blur:100", "e_sharpen:100", "e_vignette"]
 
-            new_url = "https://res.cloudinary.com/dhan3kbrs/image/upload/" + "/" + improvement[time['second'] % 4] + "/" + filters[time['day'] % 21] + "/" + option + "/" + effects[time['minute'] % 3] + imagename
+                url = "https://res.cloudinary.com/dhan3kbrs/image/upload/" + improvement[time['second'] % 4] + "/" + filters[time['day'] % 21] + "/" + option + effects[time['minute'] % 3] + imagename
+
+                
             if db.canPost(session['username']):
-                db.createPost(session['username'], new_url, caption)
+                db.createPost(session['username'], url, caption)
                 return redirect(url_for("mainpage"))
-            else: return redirect(url_for("mainpage"))
+            
+            else:
+                return redirect(url_for("mainpage"))
         return redirect(url_for("mainpage"))
 
 # Ajax extension for checking the user w/o submitting the form.
