@@ -58,7 +58,7 @@ def profile(user):
             condition = False
         userinfo = db.getUserInfo(user)
         postList = db.getSomePosts(10000, 0, user)
-        return render_template("profile.html", ownprofile = condition, username = user)
+        return render_template("profile.html", ownprofile = condition, username = user, posts = postList)
 
 @app.route("/myProfile")
 def myProfile():
