@@ -97,7 +97,7 @@ def upload():
             if db.canPost(session['username']):
                 db.createPost(session['username'], new_url, caption)
                 return redirect(url_for("mainpage"))
-            else return redirect(url_for("mainpage"))
+            else: return redirect(url_for("mainpage"))
         return redirect(url_for("mainpage"))
 
 # Ajax extension for checking the user w/o submitting the form.
