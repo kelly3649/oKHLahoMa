@@ -101,3 +101,7 @@ put the upload page onto the feed as a modal popup
 
 haleyZ -- 2017-1-23 14:02
 template for the profile. linked up user's own profile.
+
+edmondL -- 2017-1-24 22:14
+filters and profile posts finished
+
