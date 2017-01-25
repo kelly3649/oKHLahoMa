@@ -5,6 +5,32 @@ import time
 db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
 c = db.cursor()
 
+# FOLLOWING FORMAT
+
+#0|follower|INTEGER|0||0
+#1|following|INTEGER|0||0
+
+# Follows a user. First argument is person doing the following, second is the person being followed.
+# Takes Args: STRING following, STRING being_followed
+# Returns: BOOLEAN
+def followUser(following, being_followed):
+    try:
+        following = getUserInfo(following)["user_id"]
+        being_followed = getUserInfo(being_followed)["user_id"]
+        c.execute("INSERT INTO followtable VALUES (?, ?)", (following, being_followed))
+        db.commit()
+        return True
+    except Exception as e:
+        return False
+    
+# Returns a tuple containing the usernames of all the people being followed
+# Takes Args: STRING username
+# Returns: TUPLE
+def getFollowed(username):
+    userID = getUserInfo(username)["user_id"]
+    c.execute("SELECT following FROM followtable WHERE follower = ?", (userID,))
+    return c.fetchall()
+
 # USERS FORMAT
 
 #0|user_id|INTEGER|0||0
@@ -27,8 +53,7 @@ def createUser(username, pass_hash):
         db.commit()
         db.close()
         return True
-    except Exception:
-        print Exception
+    except Exception as e:
         return False
     
 # Returns whether a login is valid
@@ -109,7 +134,6 @@ def deletePost(username, post_id):
                 c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userInfo["streak"]-1, username))                
         return True
     except Exception as e:
-        print e
         return False
     
 # Checks if a user has posted today
@@ -129,8 +153,6 @@ def createPost(username, image, caption):
         newID = hash(image) % ((sys.maxsize + 1))
         timenow = int(time.time())
         userinfo = getUserInfo(username)
-        if canPost(username):
-            print "new day"
         c.execute(query, (newID, userinfo['user_id'], image, caption, timenow))
         c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (timenow, username))
         if timenow - userinfo['last_upload'] < 60*60*24:
@@ -143,8 +165,7 @@ def createPost(username, image, caption):
         db.commit()
         #print "Today's Day: " + str(time.gmtime(timenow)[2]) + ", Last Upload's Day: " + str(time.gmtime(userinfo['last_upload'])[2])
         return True
-    except Exception as whoops:
-        print whoops
+    except Exception as e:
         return False
 
 # Returns a dictified version of a post with a certain postID
@@ -168,6 +189,26 @@ def getSomePosts(number, page, user=None):
         postlist.append(dictifyPost(item))
     #print postlist
     return postlist
+
+# Returns a certain number of posts followed by a user
+# Takes Args: INT number (number of posts), INT page [, STRING user (username to get posts from)]
+# Returns: DICT
+def getFollowedPosts(number, page, user):
+    followedUsers = getFollowed(user)
+    query = "SELECT * FROM posts WHERE"
+    for user in followedUsers:
+        query += " author = %s OR" % user
+    query = query[0:len(query)-2]
+    query += "ORDER BY upload_date DESC LIMIT ? OFFSET ?"
+    try:
+        c.execute(query, (number, page*number))
+    except Exception as e:
+        return []
+    postlist = []
+    for item in c.fetchall():
+        postlist.append(dictifyPost(item))
+    return postlist
+
 
 def tables():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")

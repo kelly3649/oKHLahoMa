@@ -46,6 +46,15 @@ def loadMore():
         posts = db.getSomePosts(10, int(pg), user)
     return json.dumps(posts)
 
+@app.route("/loadMoreFollowed")
+def loadMoreFollowed():
+    pg = request.args.get("page")
+    #feedOrProfile = request.args.get("type")
+    user = request.args.get("user")
+    posts = db.getFollowedPosts(10, int(pg), user)
+    print posts
+    return json.dumps(posts)
+
 # Goes to the specified page of posts
 @app.route("/page/<int:pg>")
 def page(pg):
@@ -55,6 +64,21 @@ def page(pg):
         else:
             return redirect(url_for("page", pg=1))
         return render_template("feed.html", pagename="Home", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
+    return redirect(url_for("logreg"))
+
+@app.route("/discover")
+def discover():
+    return discoverPage(1)
+
+# Shows Followed Posts
+@app.route("/discover/<int:pg>")
+def discoverPage(pg):
+    if 'username' in session:
+        if pg >= 1:
+            post = db.getFollowedPosts(10, pg-1, session["username"])
+        else:
+            return redirect(url_for("page", pg=1))
+        return render_template("feed.html", pagename="Home", discover=True,posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
     return redirect(url_for("logreg"))
 
 @app.route("/profile/<string:user>")
