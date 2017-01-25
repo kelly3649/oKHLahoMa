@@ -3,7 +3,9 @@
 {% block leftnav %}
 <li><a href="/">Home</a></li>
 {% if canPost %}
-<li><a id="upload" href="#">Upload</a></li>
+<li id="upload-wrapper"><a id="upload" href="#">Upload</a></li>
+{% else %}
+<li id="upload-wrapper" class="disabled" title="You can only upload once a day."><a id="upload" href="#">Upload</a><li>
 {% endif %}
 {% endblock %}
 

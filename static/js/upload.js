@@ -87,11 +87,15 @@ var clear = function(){
 /* modal stuff */
 /* everything related to modal is code written by w3schools */
 /* http://www.w3schools.com/howto/howto_css_modals.asp */
-var btn = document.getElementById("upload");  
+var btn = document.getElementById("upload");
+var btn_wrapper = document.getElementById("upload-wrapper");
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
 
-if (btn != null) { //button is there, user can upload
+console.log(btn_wrapper.className);
+console.log(btn_wrapper.className.length);
+
+if (btn_wrapper.className == "") { //button isn't disabled, user can upload
     /* When the user clicks on the button, open the modal */
     btn.onclick = function() {
 	modal.style.display = "block";
@@ -111,5 +115,9 @@ if (btn != null) { //button is there, user can upload
 	}
     }
 
+}/* end of modal stuff */
+else { //button disabled
+    btn.
+
+
 }
-/* end of modal stuff */
