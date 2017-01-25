@@ -62,27 +62,33 @@ var clear = function(){
     labelnoodle.innerHTML = "Browse";
 };
 
-/* modal stuff */
 
+
+/* modal stuff */
+/* everything related to modal is code written by w3schools */
+/* http://www.w3schools.com/howto/howto_css_modals.asp */
+  
 var modal = document.getElementById('myModal');
 var btn = document.getElementById("upload");
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal 
+/* When the user clicks on the button, open the modal */
 btn.onclick = function() {
     modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
+/* When the user clicks on <span> (x), close the modal */
 span.onclick = function() {
     clear();
     modal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
+/* When the user clicks anywhere outside of the modal, close it */
 window.onclick = function(event) {
     if (event.target == modal) {
 	clear();
         modal.style.display = "none";
     }
 }
+
+/* end of modal stuff */

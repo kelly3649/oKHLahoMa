@@ -1,3 +1,37 @@
+/* loading wheel for infinite scroll */
+
+
+/* for centering the loading wheel */
+.row {
+    text-align: center;
+}
+
+.container-fluid{
+    margin: 0 auto;
+}
+
+#loading-container { 
+    text-align: center;
+}
+
+#loading {
+    margin: 0 auto;
+    display: none;
+}
+
+/*center the images */
+.img-responsive {
+    display: block;
+    margin: auto;
+}
+
+/* end of loading wheel */
+
+
+/* modal stuff */
+/* everything related to modal is code written by w3schools */
+/* http://www.w3schools.com/howto/howto_css_modals.asp */
+
 /* The Modal (background) */
 .modal {
     display: none;
@@ -35,8 +69,9 @@
     cursor: pointer;
 }
 
-
 label {
     margin: 0 auto;
 
 }
+
+/* end of modal stuff */
