@@ -27,9 +27,14 @@
       {% for post in posts %}
       <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
       by <a href="/profile/{{post['author']}}">{{ post['author'] }}</a> on {{ post['upload_date'] }}<br>
+      {% if "spotify:track" in post['caption'] %}
+      {{ post['caption']|safe }}
+      {% else %}
       <i>{{ post['caption'] }}</i><br>
+      {% endif %}
 	  <hr>
 	  <br><br>
+	  
 	  {% endfor %}
     </div>
   </div>
