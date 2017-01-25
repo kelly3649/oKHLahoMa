@@ -27,7 +27,8 @@ def mainpage():
     if 'username' in session:
         pg = 1
         post = db.getFollowedPosts(10, pg-1, session["username"])
-        return render_template("feed.html",  pagename="Home", following=True, posts = post, canPost = db.canPost(session['username']))
+
+        return render_template("feed.html", username=session['username'], pagename="Home", following=True, posts = post, canPost = db.canPost(session['username']))
     return render_template("landing.html")
 
 @app.route("/discover")
@@ -35,7 +36,7 @@ def discover():
     if 'username' in session:
         page = 1
         post = db.getSomePosts(10, 0)
-        return render_template("feed.html",pagename="Discover", canPost = db.canPost(session["username"]), posts = post)
+        return render_template("feed.html",pagename="Discover", canPost = db.canPost(session["username"]), posts = post, following=False, username=session['username'])
     return redirect(url_for("logreg"))
 
 # # Shows Followed Posts

@@ -48,6 +48,7 @@
   <div class="col-md-6">
     <div class="container-fluid" id="thePosts">
       {% for post in posts %}
+      {% if (not following) and (post["author"] != username) or following %}
       <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
       by <a href="/profile/{{post['author']}}">{{ post['author'] }}</a> on {{ post['upload_date'] }}<br>
       {% if "spotify:track" in post['caption'] %}
@@ -62,7 +63,8 @@
       </form>
       {% endif %}
       <hr>
-      <br><br>	  
+      <br><br>
+      {% endif %}
       {% endfor %}
     </div>
   </div>

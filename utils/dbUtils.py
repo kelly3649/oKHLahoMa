@@ -71,6 +71,7 @@ def createUser(username, pass_hash):
         c.execute(query, (newID, username, pass_hash, int(time.time())))
         db.commit()
         db.close()
+        followUser(username, username)
         return True
     except Exception as e:
         return False
@@ -242,6 +243,10 @@ def tables():
     for table in c.fetchall():
         stringtable.append(sntr(table[0]))
     return stringtable
+
+def getUsers():
+    c.execute("SELECT username FROM users")
+    return c.fetchall()
 
 def columns(tablename):
     c.execute("PRAGMA table_info(%s)" % tablename)
