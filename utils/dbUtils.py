@@ -5,7 +5,7 @@ import time
 db = sqlite3.connect("data/mississippi.db", check_same_thread = False)
 c = db.cursor()
 
-# FOLLOWING FORMAT
+# FOLLOWTABLE FORMAT
 
 #0|follower|INTEGER|0||0
 #1|following|INTEGER|0||0
@@ -22,7 +22,20 @@ def followUser(following, being_followed):
         return True
     except Exception as e:
         return False
-    
+
+# Unfollows a user. Fist argument is person unfollowing, second is target
+# Takes Args: STRING following, STRING being_followed
+# Returns: Boolean
+def unfollowUser(unfollowing, target):
+    try:
+        following = getUserInfo(unfollowing)["user_id"]
+        target = getUserInfo(target)["user_id"]
+        c.execute("DELETE FROM followtable WHERE follower = ? AND following = ?", (following, target))
+        db.commit()
+        return True
+    except Exception:
+        return False
+
 # Returns a tuple containing the usernames of all the people being followed
 # Takes Args: STRING username
 # Returns: TUPLE
@@ -36,7 +49,7 @@ def getFollowed(username):
 # Returns: BOOLEAN
 def canFollow(username, other):
     userID = getUserInfo(other)["user_id"]
-    return (userID,) not in getFollowed(username)
+    return (userID,) not in getFollowed(username) and username != other
 # USERS FORMAT
 
 #0|user_id|INTEGER|0||0
