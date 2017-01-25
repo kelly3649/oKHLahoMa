@@ -1,6 +1,7 @@
 /* upload button etc stuff */
 var filenoodle = document.getElementById("noot");
 var labelnoodle = document.getElementById("file-label");
+var formnoodle = document.getElementById("datform");
 
 filenoodle.onchange = function() {
     loadPhoto();
@@ -10,16 +11,17 @@ filenoodle.onchange = function() {
 };
 
 var loadPhoto = function() {
-    var formnoodle = document.getElementById("datform");
+
     var file = document.getElementById("noot").files[0];
     var reader = new FileReader();
     reader.onload = function(imgfile) {
 	document.getElementById("lul").value = imgfile.target.result;
 
-	var caption = document.createElement("INPUT");
+	var caption = document.createElement("TEXTAREA");
 	caption.setAttribute("id", "caption");
 	caption.setAttribute("name", "caption");
-	caption.setAttribute("type", "text");
+	caption.setAttribute("rows", "3");
+	caption.setAttribute("cols", "40");
 	caption.setAttribute("placeholder", "caption");
 
 	var submitButton = document.createElement("INPUT");
@@ -36,8 +38,9 @@ var loadPhoto = function() {
 	filterCheckbox.setAttribute("value", "filter");
 
 	var filter = document.createElement("LABEL");
+	filter.setAttribute("id", "filterLabel");
 	filter.setAttribute("for", "filterCheckbox");
-	filter.innerHTML = "Use Filter: ";
+	filter.innerHTML = "Use Mystery Filter of the Day: ";
 	filter.appendChild(filterCheckbox);
 
 	var spotifyCheckbox = document.createElement("INPUT");
@@ -47,19 +50,26 @@ var loadPhoto = function() {
 	spotifyCheckbox.setAttribute("value", "spotify");
 
 	var spotify = document.createElement("LABEL");
+	spotify.setAttribute("id", "spotifyLabel");
 	spotify.setAttribute("for", "spotifyCheckbox");
 	spotify.innerHTML = "Search Spotify: ";
 	spotify.appendChild(spotifyCheckbox);
 
-	if (formnoodle.childElementCount < 5) {
+	if (formnoodle.childElementCount == 1) {
+	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
 	    formnoodle.appendChild(caption);
-	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
+	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
 	    formnoodle.appendChild(filter);
-	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
 	    formnoodle.appendChild(spotify);
-	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
+	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
 	    formnoodle.appendChild(submitButton);
 	}
+
+	console.log(formnoodle.innerHTML);
+	
 	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
 
     };
@@ -68,18 +78,34 @@ var loadPhoto = function() {
 };
 
 var clear = function(){
-    var formnoodle = document.getElementById("datform");
-    if (formnoodle.childElementCount >= 4) {
+    if (formnoodle.childElementCount > 1) {
 	var caption = document.getElementById("caption");
 	caption.parentNode.removeChild(caption);
-	var submitButton = document.getElementById("submitButton");
-	submitButton.parentNode.removeChild(submitButton);
+	
 	var filterCheckbox = document.getElementById("filterCheckbox");
 	filterCheckbox.parentNode.removeChild(filterCheckbox);
+
+	var filter = document.getElementById("filterLabel");
+	filter.parentNode.removeChild(filter);
+	
+	var spotifyCheckbox = document.getElementById("spotifyCheckbox");
+	spotifyCheckbox.parentNode.removeChild(spotifyCheckbox);
+	
+	var spotify = document.getElementById("spotifyLabel");
+	spotify.parentNode.removeChild(spotify);
+
+	var submitButton = document.getElementById("submitButton");
+	submitButton.parentNode.removeChild(submitButton);
+
+	formnoodle.innerHTML = formnoodle.innerHTML.replace(/<br>/g, ""); //regex
+	
+	document.getElementById("lul").value = "";
+	document.getElementById("thatimage").setAttribute("src", "");
+	labelnoodle.innerHTML = "Browse";
+	
+
+
     }
-    document.getElementById("lul").value = "";
-    document.getElementById("thatimage").setAttribute("src", "");
-    labelnoodle.innerHTML = "Browse";
 };
 
 
@@ -116,8 +142,3 @@ if (btn_wrapper.className == "") { //button isn't disabled, user can upload
     }
 
 }/* end of modal stuff */
-else { //button disabled
-    btn.
-
-
-}
