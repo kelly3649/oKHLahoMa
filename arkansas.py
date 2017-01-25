@@ -41,9 +41,9 @@ def loadMore():
     feedOrProfile = request.args.get("type")
     user = request.args.get("user")
     if (feedOrProfile == "feed"):
-        posts = db.getSomePosts(10, pg)
+        posts = db.getSomePosts(10, int(pg))
     else:
-        posts = db.getSomePosts(10, pg, user)
+        posts = db.getSomePosts(10, int(pg), user)
     return json.dumps(posts)
 
 # Goes to the specified page of posts
