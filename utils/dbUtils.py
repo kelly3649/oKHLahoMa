@@ -128,9 +128,9 @@ def getPostByID(postID):
 def getSomePosts(number, page, user=None):
     if user != None:
         user = getUserInfo(user)['user_id']
-        c.execute('SELECT * FROM posts WHERE author = ? LIMIT ? OFFSET ?', (user, number, page * number))
+        c.execute('SELECT * FROM posts WHERE author = ? ORDER BY upload_date DESC LIMIT ? OFFSET ?', (user, number, page * number))
     else:
-        c.execute('SELECT * FROM posts LIMIT ? OFFSET ?', (number, page * number))
+        c.execute('SELECT * FROM posts ORDER BY upload_date DESC LIMIT ? OFFSET ?', (number, page * number))
     postlist = []
     for item in c.fetchall():
         postlist.append(dictifyPost(item))
