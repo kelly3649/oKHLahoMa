@@ -27,7 +27,8 @@ def mainpage():
     if 'username' in session:
         pg = 1
         post = db.getFollowedPosts(10, pg-1, session["username"])
-
+        if len(post) == 0:
+            return render_template("feed.html", username=session['username'], pagename="Home", following=True, noPosts = True, canPost = db.canPost(session['username']))
         return render_template("feed.html", username=session['username'], pagename="Home", following=True, posts = post, canPost = db.canPost(session['username']))
     return render_template("landing.html")
 
