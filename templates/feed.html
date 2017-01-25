@@ -2,13 +2,23 @@
 
 {% block head %}
 <link type="text/css" rel="stylesheet" href="/static/css/upload.css">
+{% if profile %}
+<title>{{profile}}'s Page</title>
+{% else %}
 <title>{{pagename}}</title>
+{% endif %}
 {% endblock %}
 
+
+  
 {% block body %}
 
 <div class="container-fluid">
 
+{% if profile %}
+  <h1 class="text-center">{{ profile }}'s Profile</h1>
+  <hr></hr>
+  {% endif %}
   
   <!-- posts -->
   <div class="row">
@@ -27,8 +37,13 @@
 
   <div class="row">
     <div class="col-md-12">
+      {% if not profile %}
       <a href="/page/{{ lastPage }}">{{ lastPage }}</a>
       <a href="/page/{{ nextPage }}">{{ nextPage }}</a>
+      {% else %}
+      <a href="/{{profile}}/{{ lastPage }}">{{ lastPage }}</a>
+      <a href="/{{profile}}/{{ nextPage }}">{{ nextPage }}</a>
+      {% endif %}
     </div>
   </div>
 

@@ -62,7 +62,7 @@ def profilepage(user, pg):
             condition = False
         userinfo = db.getUserInfo(user)
         postList = db.getSomePosts(10, pg-1, user)
-        return render_template("profile.html", ownprofile = condition, username = user, posts = postList, info = userinfo)
+        return render_template("feed.html", ownprofile = condition, profile = user, posts = postList, info = userinfo)
 
 @app.route("/myProfile")
 def myProfile():
