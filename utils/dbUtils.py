@@ -62,7 +62,7 @@ def reverseLookup(userID):
 def getUserInfo(username):
     c.execute("SELECT * FROM users WHERE username = ?", (username,))
     items = c.fetchone()
-    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[5])) }
+    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5] }
     return info
 
 # Deletes a user and all of their posts
@@ -114,7 +114,7 @@ def deletePost(username, post_id):
 def canPost(username):
     timenow = int(time.time())
     userinfo = getUserInfo(username)
-    return True#time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
+    return time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
 
 # Creates a post. Returns whether the post is created succesfully or not
 # Takes Args: STRING username, STRING image (represents image url), STRING caption
