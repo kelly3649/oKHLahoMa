@@ -75,7 +75,17 @@ def follow():
         return redirect(url_for("profile", user=following))
     else:
         return redirect(url_for("profile", user=following))
-    
+
+@app.route("/unfollow", methods=["POST"])
+def unfollow():
+    if 'username' in session:
+        follower = session["username"]
+        following = request.form["profile"]
+        db.unfollowUser(follower, following)
+        return redirect(url_for("profile", user=following))
+    else:
+        return redirect(url_for("profile", user=following))
+
 @app.route("/discover")
 def discover():
     return discoverPage(1)

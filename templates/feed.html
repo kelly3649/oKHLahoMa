@@ -26,8 +26,15 @@
   {% if canfollow %}
   <form action="/follow" method="POST">
     <input name="profile" type="hidden" value="{{ profile }}"/>
-    <input class="btn" type="submit" value="Follow"/>
+    <input class="btn btn-primary" type="submit" value="Follow"/>
   </form>
+  {% else %}
+  {% if not ownprofile %}
+  <form action="/unfollow" method="POST">
+    <input name="profile" type="hidden" value="{{ profile }}"/>
+    <input class="btn btn-success" type="submit" value="Unfollow"/>
+  </form>
+  {% endif %}
   {% endif %}
   {% endif %}
 
