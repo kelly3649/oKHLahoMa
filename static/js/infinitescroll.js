@@ -30,7 +30,6 @@ var loadMore = function(){
 		hasMore = false;
 	    }
 	    else {
-		nextPageToLoad += 1;	
 		for (var key in d){
 		    var entry = d[key];
 
@@ -47,14 +46,15 @@ var loadMore = function(){
 
 		}
 	    }
+	    
+	    nextPageToLoad += 1;
 	    loadingGIF.style.display = "none"; /* hide loading gif */
 	}
 
      });
 	
     }
-    else
-	console.log("failure");
+	
 }
 
 window.addEventListener("scroll", loadMore);
