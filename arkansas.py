@@ -63,6 +63,7 @@ def loadMore():
     if (feedOrProfile == "feed"):
         posts = db.getSomePosts(10, int(pg))
     else:
+        print user
         posts = db.getSomePosts(10, int(pg), user)
     return json.dumps(posts)
 

@@ -6,7 +6,7 @@ var loadMore = function(){
     if (hasMore && window.innerHeight + document.body.scrollTop >= document.body.clientHeight){
 	var loadingGIF = document.getElementById("loading");
 	loadingGIF.style.display = "block"; /* unhide loading gif */
-	
+	var ownprofile = document.getElementById("ownprofile").innerHTML;
 	var user = document.getElementById("profileLabel").innerHTML;
 	if (user == "")
 	    var type = "feed";
@@ -41,7 +41,7 @@ var loadMore = function(){
 
 		    var deleteButton = "";
 
-		    if (user == "ownprofile"){
+		    if (ownprofile == "ownprofile"){
 			deleteButton += '<form action="delete" method="POST">\
 <input name="postid" type="hidden" value="' + entry['post_id'] + '"/>\
 <input class="btn" type="submit" value="Delete Post"/>\
