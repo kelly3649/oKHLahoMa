@@ -1,3 +1,37 @@
+.row {
+    text-align: center;
+}
+
+.container-fluid{
+    margin: 0 auto;
+}
+
+/*center the images */
+.img-responsive {
+    display: block;
+    margin: auto;
+}
+
+/* loading wheel */
+#loading-container { 
+    text-align: center;
+}
+
+#loading {
+    display: none;
+    margin: 0 auto;
+}
+
+#profileLabel {
+    display: none;
+}
+/* end of loading wheel */
+
+
+/* modal stuff */
+/* everything related to modal is code written by w3schools */
+/* http://www.w3schools.com/howto/howto_css_modals.asp */
+
 /* The Modal (background) */
 .modal {
     display: none;
@@ -35,8 +69,9 @@
     cursor: pointer;
 }
 
-
 label {
     margin: 0 auto;
 
 }
+
+/* end of modal stuff */

@@ -28,16 +28,36 @@ var loadPhoto = function() {
 	submitButton.setAttribute("value", "upload");
 	submitButton.className += "btn btn-default";
 
+	
 	var filterCheckbox = document.createElement("INPUT");
 	filterCheckbox.setAttribute("id", "filterCheckbox");
 	filterCheckbox.setAttribute("type", "checkbox");
 	filterCheckbox.setAttribute("name", "filter");
 	filterCheckbox.setAttribute("value", "filter");
 
-	
-	if (formnoodle.childElementCount < 4) {
+	var filter = document.createElement("LABEL");
+	filter.setAttribute("for", "filterCheckbox");
+	filter.innerHTML = "Use Filter: ";
+	filter.appendChild(filterCheckbox);
+
+	var spotifyCheckbox = document.createElement("INPUT");
+	spotifyCheckbox.setAttribute("id", "spotifyCheckbox");
+	spotifyCheckbox.setAttribute("type", "checkbox");
+	spotifyCheckbox.setAttribute("name", "spotify");
+	spotifyCheckbox.setAttribute("value", "spotify");
+
+	var spotify = document.createElement("LABEL");
+	spotify.setAttribute("for", "spotifyCheckbox");
+	spotify.innerHTML = "Search Spotify: ";
+	spotify.appendChild(spotifyCheckbox);
+
+	if (formnoodle.childElementCount < 5) {
 	    formnoodle.appendChild(caption);
-	    formnoodle.appendChild(filterCheckbox);
+	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.appendChild(filter);
+	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.appendChild(spotify);
+	    formnoodle.appendChild(document.createElement("br"));
 	    formnoodle.appendChild(submitButton);
 	}
 	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
@@ -62,27 +82,34 @@ var clear = function(){
     labelnoodle.innerHTML = "Browse";
 };
 
-/* modal stuff */
 
+
+/* modal stuff */
+/* everything related to modal is code written by w3schools */
+/* http://www.w3schools.com/howto/howto_css_modals.asp */
+var btn = document.getElementById("upload");  
 var modal = document.getElementById('myModal');
-var btn = document.getElementById("upload");
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    clear();
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-	clear();
-        modal.style.display = "none";
+if (btn != null) { //button is there, user can upload
+    /* When the user clicks on the button, open the modal */
+    btn.onclick = function() {
+	modal.style.display = "block";
     }
+
+    /* When the user clicks on <span> (x), close the modal */
+    span.onclick = function() {
+	clear();
+	modal.style.display = "none";
+    }
+
+    /* When the user clicks anywhere outside of the modal, close it */
+    window.onclick = function(event) {
+	if (event.target == modal) {
+	    clear();
+            modal.style.display = "none";
+	}
+    }
+
 }
+/* end of modal stuff */
