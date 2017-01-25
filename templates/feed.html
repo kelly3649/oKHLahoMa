@@ -96,6 +96,10 @@
   </div>
 </div>
 
+{% if not discover %}
 <script src="/static/js/infinitescroll.js"></script>
+{% else %}
+<script src="/static/js/discoverscroll.js"></script>
+{% endif %}
 
 {% endblock %}
