@@ -109,3 +109,14 @@ danielM -- 2017-01-24 17:42
 Neither the filters or the profile posts worked before I'm not sure what the other devlog entries mean.
 Fixed filter and implemented profile posts. Also put links on the feed to profiles of the authors.
 Made some steps in allowing pages on profile pages but got too tired and had to take a break.
+
+haleyZ -- 2017-01-24 23:52 
+made feed & profile have infinite scroll
+
+haleyZ -- 2017-01-25 00:14
+changed the upload button behavior so that it would appear greyed out instead of not appearing at all when a user can't upload
+
+haleyZ -- 2017-01-25 01:58
+bug fixes:
+ * in the upload modal, the <br> were not being removed so after a few click-aways the modal would not close properly. Had to remove those inside clear() as well
+ * infinite scroll would load a page twice sometimes
