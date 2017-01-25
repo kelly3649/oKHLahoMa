@@ -52,7 +52,7 @@ var loadPhoto = function() {
 	var spotify = document.createElement("LABEL");
 	spotify.setAttribute("id", "spotifyLabel");
 	spotify.setAttribute("for", "spotifyCheckbox");
-	spotify.innerHTML = "Search Spotify: ";
+	spotify.innerHTML = "Ask the Spotify Genie for a Song (he might say no): ";
 	spotify.appendChild(spotifyCheckbox);
 
 	if (formnoodle.childElementCount == 1) {
