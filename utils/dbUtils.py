@@ -31,6 +31,12 @@ def getFollowed(username):
     c.execute("SELECT following FROM followtable WHERE follower = ?", (userID,))
     return c.fetchall()
 
+# Returns a boolean if username can follow other
+# Takes Args: STRING username, STRING other
+# Returns: BOOLEAN
+def canFollow(username, other):
+    userID = getUserInfo(other)["user_id"]
+    return (userID,) not in getFollowed(username)
 # USERS FORMAT
 
 #0|user_id|INTEGER|0||0
@@ -111,19 +117,20 @@ def deleteUser(username):
 # Takes Args: TUPLE items
 # Returns: DICT
 def dictifyPost(items):
-    info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])), "raw_upload_date":items[4] }
-    return info
+    try:
+        info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])), "raw_upload_date":items[4] }
+        return info
+    except Exception:
+        return {}
+
 
 # Deletes a post based on postid
 # Takes Args: STRING username, INT post_id
 # Returns: BOOLEAN
 def deletePost(username, post_id):
     try:
-        print "IM TRYING"
         postdata = getPostByID(post_id)
-        print postdata
         c.execute("DELETE FROM posts WHERE post_id = ?", (post_id,))
-        print "Deleted"
         db.commit()
         if getUserInfo(username)["last_upload"] == postdata["raw_upload_date"]:
             lastPost = getSomePosts(1, 0, username)
@@ -133,7 +140,7 @@ def deletePost(username, post_id):
             if userInfo["streak"] == userInfo["max_streak"]:
                 c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userInfo["streak"]-1, username))                
         return True
-    except Exception as e:
+    except Exception:
         return False
     
 # Checks if a user has posted today
@@ -142,7 +149,10 @@ def deletePost(username, post_id):
 def canPost(username):
     timenow = int(time.time())
     userinfo = getUserInfo(username)
-    return time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
+    try:
+        return time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
+    except Exception:
+        return False
 
 # Creates a post. Returns whether the post is created succesfully or not
 # Takes Args: STRING username, STRING image (represents image url), STRING caption
@@ -194,20 +204,23 @@ def getSomePosts(number, page, user=None):
 # Takes Args: INT number (number of posts), INT page [, STRING user (username to get posts from)]
 # Returns: DICT
 def getFollowedPosts(number, page, user):
-    followedUsers = getFollowed(user)
-    query = "SELECT * FROM posts WHERE"
-    for user in followedUsers:
-        query += " author = %s OR" % user
-    query = query[0:len(query)-2]
-    query += "ORDER BY upload_date DESC LIMIT ? OFFSET ?"
     try:
-        c.execute(query, (number, page*number))
-    except Exception as e:
+        followedUsers = getFollowed(user)
+        query = "SELECT * FROM posts WHERE"
+        for user in followedUsers:
+            query += " author = %s OR" % user
+        query = query[0:len(query)-2]
+        query += "ORDER BY upload_date DESC LIMIT ? OFFSET ?"
+        try:
+            c.execute(query, (number, page*number))
+        except Exception as e:
+            return []
+        postlist = []
+        for item in c.fetchall():
+            postlist.append(dictifyPost(item))
+        return postlist
+    except Exception:
         return []
-    postlist = []
-    for item in c.fetchall():
-        postlist.append(dictifyPost(item))
-    return postlist
 
 
 def tables():

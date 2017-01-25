@@ -18,12 +18,17 @@
 
 <div class="text-center">
   <h1>{{ profile }}'s Profile</h1>
-
   {% if ownprofile %}
   <b>Current Streak</b>: {{ info["streak"] }}<br>
   <b>Best Streak</b>:  {{ info["max_streak"] }}<br>
   <b>Last Upload Time</b>: {{ info["last_upload_formatted"] }}<br>
-
+  {% else %}
+  {% if canfollow %}
+  <form action="/follow" method="POST">
+    <input name="profile" type="hidden" value="{{ profile }}"/>
+    <input class="btn" type="submit" value="Follow"/>
+  </form>
+  {% endif %}
   {% endif %}
 
   <hr>

@@ -66,6 +66,16 @@ def page(pg):
         return render_template("feed.html", pagename="Home", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
     return redirect(url_for("logreg"))
 
+@app.route("/follow", methods=["POST"])
+def follow():
+    if 'username' in session:
+        follower = session["username"]
+        following = request.form["profile"]
+        db.followUser(follower, following)
+        return redirect(url_for("profile", user=following))
+    else:
+        return redirect(url_for("profile", user=following))
+    
 @app.route("/discover")
 def discover():
     return discoverPage(1)
@@ -78,7 +88,7 @@ def discoverPage(pg):
             post = db.getFollowedPosts(10, pg-1, session["username"])
         else:
             return redirect(url_for("page", pg=1))
-        return render_template("feed.html", pagename="Home", discover=True,posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
+        return render_template("feed.html",  pagename="Home", discover=True,posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
     return redirect(url_for("logreg"))
 
 @app.route("/profile/<string:user>")
@@ -102,7 +112,7 @@ def profilepage(user, pg):
             condition = False
         userinfo = db.getUserInfo(user)
         postList = db.getSomePosts(10, pg-1, user)
-        return render_template("feed.html", ownprofile = condition, profile = user, posts = postList, info = userinfo, canPost = db.canPost(session["username"]))
+        return render_template("feed.html", canfollow=db.canFollow(session["username"], user), ownprofile = condition, profile = user, posts = postList, info = userinfo, canPost = db.canPost(session["username"]))
 
 @app.route("/myProfile")
 def myProfile():
