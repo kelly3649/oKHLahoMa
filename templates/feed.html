@@ -104,7 +104,7 @@
     <div id="loading">
       <img src="/static/img/loading.gif" alt="Loading...">
     </div>
-    <div id="profileLabel">{% if profile %}{{ profile }}{% endif %}</div>
+    <div id="profileLabel">{% if profile %}{% if ownprofile %}ownprofile{% else %}{{ profile }}{% endif %}{% endif %}</div>
   </div>
 </div>
 
