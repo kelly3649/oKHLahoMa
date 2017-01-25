@@ -42,9 +42,9 @@ var loadMore = function(){
 		    var deleteButton = "";
 
 		    if (user == "ownprofile"){
-			deleteButton += '<form action="delete" method="POST">
-<input name="postid" type="hidden" value="' + entry['post_id'] + '"/>
-<input class="btn" type="submit" value="Delete Post"/>
+			deleteButton += '<form action="delete" method="POST">\
+<input name="postid" type="hidden" value="' + entry['post_id'] + '"/>\
+<input class="btn" type="submit" value="Delete Post"/>\
 </form>'
 		    }
 
@@ -63,6 +63,9 @@ var loadMore = function(){
 
      });
 	
+    }
+    else {
+	console.log("fail");
     }
 	
 }
