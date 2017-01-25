@@ -25,11 +25,31 @@ def sanitize(string):
 @app.route("/")
 def mainpage():
     if 'username' in session:
+        pg = 1
+        post = db.getFollowedPosts(10, pg-1, session["username"])
+        return render_template("feed.html",  pagename="Home", following=True, posts = post, canPost = db.canPost(session['username']))
+    return render_template("landing.html")
+
+@app.route("/discover")
+def discover():
+    if 'username' in session:
         page = 1
         post = db.getSomePosts(10, 0)
-        #print post
-        return render_template("feed.html",pagename="Home", canPost = db.canPost(session["username"]), posts = post, lastPage = page-1, nextPage = page+1)
-    return render_template("landing.html")
+        return render_template("feed.html",pagename="Discover", canPost = db.canPost(session["username"]), posts = post)
+    return redirect(url_for("logreg"))
+
+# # Shows Followed Posts
+# @app.route("/discover/<int:pg>")
+# def discoverPage(pg):
+#     if 'username' in session:
+#         if pg >= 1:
+#             post = db.getFollowedPosts(10, pg-1, session["username"])
+#         else:
+#             return redirect(url_for("page", pg=1))
+#         return render_template("feed.html",  pagename="Home", discover=True,posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
+#     return redirect(url_for("logreg"))
+
+
 
 @app.route("/logreg")
 def logreg():
@@ -55,16 +75,16 @@ def loadMoreFollowed():
     print posts
     return json.dumps(posts)
 
-# Goes to the specified page of posts
-@app.route("/page/<int:pg>")
-def page(pg):
-    if 'username' in session:
-        if pg >= 1:
-            post = db.getSomePosts(10, pg-1)
-        else:
-            return redirect(url_for("page", pg=1))
-        return render_template("feed.html", pagename="Home", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
-    return redirect(url_for("logreg"))
+# # Goes to the specified page of posts
+# @app.route("/page/<int:pg>")
+# def page(pg):
+#     if 'username' in session:
+#         if pg >= 1:
+#             post = db.getSomePosts(10, pg-1)
+#         else:
+#             return redirect(url_for("page", pg=1))
+#         return render_template("feed.html", pagename="Home", posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
+#     return redirect(url_for("logreg"))
 
 @app.route("/follow", methods=["POST"])
 def follow():
@@ -85,21 +105,6 @@ def unfollow():
         return redirect(url_for("profile", user=following))
     else:
         return redirect(url_for("profile", user=following))
-
-@app.route("/discover")
-def discover():
-    return discoverPage(1)
-
-# Shows Followed Posts
-@app.route("/discover/<int:pg>")
-def discoverPage(pg):
-    if 'username' in session:
-        if pg >= 1:
-            post = db.getFollowedPosts(10, pg-1, session["username"])
-        else:
-            return redirect(url_for("page", pg=1))
-        return render_template("feed.html",  pagename="Home", discover=True,posts = post, lastPage = pg-1, nextPage = pg+1, canPost = db.canPost(session['username']))
-    return redirect(url_for("logreg"))
 
 @app.route("/profile/<string:user>")
 def profile(user):
