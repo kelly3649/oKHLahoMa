@@ -62,7 +62,7 @@ def reverseLookup(userID):
 def getUserInfo(username):
     c.execute("SELECT * FROM users WHERE username = ?", (username,))
     items = c.fetchone()
-    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5] }
+    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[5])) }
     return info
 
 # Deletes a user and all of their posts

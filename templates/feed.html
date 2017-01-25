@@ -15,8 +15,19 @@
 
 
 {% if profile %}
-<h1 class="text-center">{{ profile }}'s Profile</h1>
-<hr></hr>
+
+<div class="text-center">
+  <h1>{{ profile }}'s Profile</h1>
+
+  {% if ownprofile %}
+  <b>Current Streak</b>: {{ info["streak"] }}<br>
+  <b>Best Streak</b>:  {{ info["max_streak"] }}<br>
+  <b>Last Upload Time</b>: {{ info["last_upload"] }}<br>
+
+  {% endif %}
+
+  <hr>
+</div>
 {% endif %}
 
 <!-- posts -->
