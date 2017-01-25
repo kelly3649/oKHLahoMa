@@ -70,4 +70,9 @@ var loadMore = function(){
 	
 }
 
-window.addEventListener("scroll", loadMore);
+var attach = function(){
+    window.addEventListener("scroll", loadMore);
+    loadMore();
+}
+
+window.onload = attach;
