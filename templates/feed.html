@@ -1,7 +1,7 @@
 {% extends "loggedin.html" %}
 
 {% block head %}
-<link type="text/css" rel="stylesheet" href="/static/css/upload.css">
+<link type="text/css" rel="stylesheet" href="/static/css/feed.css">
 {% if profile %}
 <title>{{profile}}'s Page</title>
 {% else %}
@@ -10,72 +10,78 @@
 {% endblock %}
 
 
-  
+
 {% block body %}
 
-<div class="container-fluid">
 
 {% if profile %}
-  <h1 class="text-center">{{ profile }}'s Profile</h1>
-  <hr></hr>
-  {% endif %}
-  
-  <!-- posts -->
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+<h1 class="text-center">{{ profile }}'s Profile</h1>
+<hr></hr>
+{% endif %}
+
+<!-- posts -->
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="container-fluid">
       {% for post in posts %}
       <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
       by <a href="/profile/{{post['author']}}">{{ post['author'] }}</a> on {{ post['upload_date'] }}<br>
       <i>{{ post['caption'] }}<i><br>
-
+	  <hr>
 	  <br><br>
 	  {% endfor %}
     </div>
-    <div class="col-md-3"></div>
   </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      {% if not profile %}
-      <a href="/page/{{ lastPage }}">{{ lastPage }}</a>
-      <a href="/page/{{ nextPage }}">{{ nextPage }}</a>
-      {% else %}
-      <a href="/{{profile}}/{{ lastPage }}">{{ lastPage }}</a>
-      <a href="/{{profile}}/{{ nextPage }}">{{ nextPage }}</a>
-      {% endif %}
-    </div>
-  </div>
-
-  <!-- end of posts-->
-  
-  <!-- modal stuff for upload button "popup" -->
-  <!-- everything related to modal is code written by w3schools -->
-  
-  <div id="myModal" class="modal">
-    
-    <div class="modal-content">
-      
-      <span class="close">&times;</span>
-      <br>
-      <div id="file-things">
-	<label class="btn-default btn">
-	  <span id="file-label">Browse</span>
-	  <input class="file" id="noot" name="files[]" type="file" style="display: none;" accept="image/*"/>
-	</label>
-	<br>
-	<img id="thatimage" class="img-responsive">
-      </div>
-      <br>
-      <form action="/upload" method="POST" id="datform">
-	<input id="lul" name="sneaky" type="hidden" value=""/>
-      </form>
-      <script src="/static/js/upload.js"></script>
-    </div>
-
-    <!-- end of modal stuff -->
-  </div>
-  
+  <div class="col-md-3"></div>
 </div>
+
+<div class="row">
+  <div class="col-md-12">
+    {% if not profile %}
+    <a href="/page/{{ lastPage }}">{{ lastPage }}</a>
+    <a href="/page/{{ nextPage }}">{{ nextPage }}</a>
+    {% else %}
+    <a href="/{{profile}}/{{ lastPage }}">{{ lastPage }}</a>
+    <a href="/{{profile}}/{{ nextPage }}">{{ nextPage }}</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- end of posts-->
+
+<!-- modal stuff for upload button "popup" -->
+<!-- everything related to modal is code written by w3schools -->
+<!-- http://www.w3schools.com/howto/howto_css_modals.asp -->
+
+<div id="myModal" class="modal">
+  
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <br>
+    <div id="file-things">
+      <label class="btn-default btn">
+	<span id="file-label">Browse</span>
+	<input class="file" id="noot" name="files[]" type="file" style="display: none;" accept="image/*"/>
+      </label>
+      <br>
+      <img id="thatimage" class="img-responsive">
+
+    </div>
+    <br>
+    <form action="/upload" method="POST" id="datform">
+      <input id="lul" name="sneaky" type="hidden" value=""/>
+    </form>
+  </div>
+  <script src="/static/js/upload.js"></script>
+  
+</div> <!-- end of myModal div -->
+
+<div class="row">
+  <div id="loading-container">
+    <div id="loading">
+      <img src="/static/img/loading.gif" alt="Loading...">
+    </div>
+  </div>
 </div>
 {% endblock %}
