@@ -123,3 +123,8 @@ bug fixes:
 
 danielM -- 2017-01-25 13:45
 Fully implemented deleting post
+
+haleyZ -- 2017-01-25 15:11
+* added streak info to myProfile
+* updated design doc to reflect current version
+* added deleting post button to the infinite scroll js so that the newly loaded posts will also have the delete button
