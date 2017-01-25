@@ -61,6 +61,11 @@ def page(pg):
 def profile(user):
     return profilepage(user, 1)
 
+@app.route("/delete", methods=["POST"])
+def delete():
+    db.deletePost(session["username"], request.form["postid"])
+    return redirect(url_for("profile", user=session["username"]))
+
 # Your profile page, or other users profile pages. Will allow you to edit your own.
 @app.route("/profile/<string:user>/<int:pg>")
 def profilepage(user, pg):

@@ -32,10 +32,15 @@
       {% else %}
       <i>{{ post['caption'] }}</i><br>
       {% endif %}
-	  <hr>
-	  <br><br>
-	  
-	  {% endfor %}
+      {% if ownprofile %}
+      <form action="delete" method="POST">
+	<input name="postid" type="hidden" value="{{ post['post_id']}}"/>
+	<input class="btn" type="submit" value="Delete Post"/>
+      </form>
+      {% endif %}
+      <hr>
+      <br><br>	  
+      {% endfor %}
     </div>
   </div>
   <div class="col-md-3"></div>

@@ -65,6 +65,15 @@ def getUserInfo(username):
     info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5] }
     return info
 
+# Deletes a user and all of their posts
+# Takes args: STRING username
+# Returns: BOOLEAN
+def deleteUser(username):
+    userinfo = getUserInfo(username)
+    c.execute("DELETE FROM posts WHERE author = ?", (userinfo["user_id"],))
+    c.execute("DELETE FROM users WHERE username = ?", (username,))
+    db.commit()
+
 # POST FORMAT
 
 #0|post_id|INTEGER|0||0
@@ -77,16 +86,35 @@ def getUserInfo(username):
 # Takes Args: TUPLE items
 # Returns: DICT
 def dictifyPost(items):
-    info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])) }
+    info = { "post_id" : items[0], "author" : reverseLookup(items[1]), "photo_link" : items[2], "caption" : items[3], "upload_date" : time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[4])), "raw_upload_date":items[4] }
     return info
 
+# Deletes a post based on postid
+# Takes Args: STRING username, INT post_id
+# Returns: BOOLEAN
+def deletePost(username, post_id):
+    try:
+        print "IM TRYING"
+        postdata = getPostByID(post_id)
+        print postdata
+        c.execute("DELETE FROM posts WHERE post_id = ?", (post_id,))
+        print "Deleted"
+        db.commit()
+        if getUserInfo(username)["last_upload"] == postdata["raw_upload_date"]:
+            lastPost = getSomePosts(1, 0, username)
+            c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (lastPost["raw_upload_date"], username))
+        return True
+    except Exception as e:
+        print e
+        return False
+    
 # Checks if a user has posted today
 # Takes Args: STRING username
 # Returns: BOOLEAN
 def canPost(username):
     timenow = int(time.time())
     userinfo = getUserInfo(username)
-    return time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
+    return True#time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
 
 # Creates a post. Returns whether the post is created succesfully or not
 # Takes Args: STRING username, STRING image (represents image url), STRING caption
