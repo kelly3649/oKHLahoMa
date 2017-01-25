@@ -103,6 +103,10 @@ def deletePost(username, post_id):
         if getUserInfo(username)["last_upload"] == postdata["raw_upload_date"]:
             lastPost = getSomePosts(1, 0, username)
             c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (lastPost["raw_upload_date"], username))
+            userInfo = getUserInfo(username)
+            c.execute("UPDATE users SET streak = ? WHERE username = ?", (getUserInfo(username)["streak"]-1, username))
+            if userInfo["streak"] == userInfo["max_streak"]:
+                c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userInfo["streak"]-1, username))                
         return True
     except Exception as e:
         print e

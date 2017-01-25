@@ -120,3 +120,6 @@ haleyZ -- 2017-01-25 01:58
 bug fixes:
  * in the upload modal, the <br> were not being removed so after a few click-aways the modal would not close properly. Had to remove those inside clear() as well
  * infinite scroll would load a page twice sometimes
+
+danielM -- 2017-01-25 13:45
+Fully implemented deleting post
