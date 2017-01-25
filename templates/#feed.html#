@@ -27,7 +27,7 @@
       {% for post in posts %}
       <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
       by <a href="/profile/{{post['author']}}">{{ post['author'] }}</a> on {{ post['upload_date'] }}<br>
-      <i>{{ post['caption'] }}</i><br>
+      <i>{{ post['caption'] }}<i><br>
 	  <hr>
 	  <br><br>
 	  {% endfor %}

@@ -35,6 +35,17 @@ def mainpage():
 def logreg():
     return render_template("logreg.html")
 
+@app.route("/loadMore")
+def loadMore():
+    pg = request.args.get("page")
+    feedOrProfile = request.args.get("type")
+    user = request.args.get("user")
+    if (feedOrProfile == "feed"):
+        posts = db.getSomePosts(10, pg)
+    else:
+        posts = db.getSomePosts(10, pg, user)
+    return json.dumps(posts)
+
 # Goes to the specified page of posts
 @app.route("/page/<int:pg>")
 def page(pg):
