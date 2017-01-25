@@ -39,7 +39,17 @@ var loadMore = function(){
 		    
 		    var caption = '<i>' + entry['caption'] + '</i>';
 
-		    var post = img + '<br>by ' + authorTag + ' on ' + entry['uploadDate'] + '<br>' + caption + '<br><hr><br><br>';
+		    var deleteButton = "";
+
+		    if (user == "ownprofile"){
+			deleteButton += '<form action="delete" method="POST">
+<input name="postid" type="hidden" value="' + entry['post_id'] + '"/>
+<input class="btn" type="submit" value="Delete Post"/>
+</form>'
+		    }
+
+		    
+		    var post = img + '<br>by ' + authorTag + ' on ' + entry['uploadDate'] + '<br>' + caption + deleteButton + '<br><hr><br><br>';
 		    console.log(post);
 
 		    postArea.innerHTML = postArea.innerHTML + post;
