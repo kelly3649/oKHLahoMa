@@ -2,7 +2,9 @@
 
 {% block leftnav %}
 <li><a href="/">Home</a></li>
+{% if canPost %}
 <li><a id="upload" href="#">Upload</a></li>
+{% endif %}
 {% endblock %}
 
 {% block rightnav %}

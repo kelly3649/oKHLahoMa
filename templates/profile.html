@@ -1,5 +1,9 @@
 {% extends "loggedin.html" %}
 
+{% block head %}
+<title>{{username}}</title>
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
   <h1>{{ username }}'s Profile</h1>
