@@ -180,7 +180,7 @@ def spotifyGet(songname):
         firstresult = res.json()["tracks"]['items'][0]
     except Exception as e:
         return False
-    caption = "<iframe src='https://embed.spotify.com/?uri=%s' frameborder='0' width='300' height='80'></iframe>" % firstresult['uri']
+    caption = "<iframe src='https://embed.spotify.com/?uri=%s' frameborder='0'></iframe>" % firstresult['uri']
     return caption
 
 if __name__ == "__main__":
