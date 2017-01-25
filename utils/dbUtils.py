@@ -107,7 +107,10 @@ def reverseLookup(userID):
 def getUserInfo(username):
     c.execute("SELECT * FROM users WHERE username = ?", (username,))
     items = c.fetchone()
-    info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5], "last_upload_formatted": time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[5])) }
+    if items[5]==0:
+        info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5], "last_upload_formatted": "No last upload" }
+    else:
+        info = { "user_id" : items[0], "streak" : items[3], "max_streak" : items[4], "last_upload" : items[5], "last_upload_formatted": time.strftime("%A, %B %d %Y at %I:%M %p", time.localtime(items[5])) }
     return info
 
 # Deletes a user and all of their posts
@@ -115,8 +118,10 @@ def getUserInfo(username):
 # Returns: BOOLEAN
 def deleteUser(username):
     userinfo = getUserInfo(username)
+    c.execute("DELETE FROM followtable WHERE follower = ?", (getUserInfo(username)['user_id'],))
     c.execute("DELETE FROM posts WHERE author = ?", (userinfo["user_id"],))
     c.execute("DELETE FROM users WHERE username = ?", (username,))
+
     db.commit()
 
 # POST FORMAT
@@ -147,13 +152,20 @@ def deletePost(username, post_id):
         c.execute("DELETE FROM posts WHERE post_id = ?", (post_id,))
         db.commit()
         if getUserInfo(username)["last_upload"] == postdata["raw_upload_date"]:
+            print "YIKES"
             lastPost = getSomePosts(1, 0, username)
-            c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (lastPost["raw_upload_date"], username))
-            userInfo = getUserInfo(username)
-            c.execute("UPDATE users SET streak = ? WHERE username = ?", (getUserInfo(username)["streak"]-1, username))
-            if userInfo["streak"] == userInfo["max_streak"]:
-                c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userInfo["streak"]-1, username))                
-        return True
+            if len(lastPost) != 0:
+                c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (lastPost["raw_upload_date"], username))
+                userInfo = getUserInfo(username)
+                c.execute("UPDATE users SET streak = ? WHERE username = ?", (getUserInfo(username)["streak"]-1, username))
+                if userInfo["streak"] == userInfo["max_streak"]:
+                    c.execute("UPDATE users SET max_streak = ? WHERE username = ?", (userInfo["streak"]-1, username))
+                db.commit()
+                return True
+            else:
+                c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (0, username))
+                c.execute("UPDATE users SET streak = 0 WHERE username = ?", (username,))
+                db.commit()
     except Exception:
         return False
     
