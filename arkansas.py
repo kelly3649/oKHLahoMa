@@ -95,27 +95,19 @@ def upload():
             photo_name = response["public_id"]
             url = response["secure_url"]
             autofilter = "filter" in request.form
-            print "FILTER IS: " + str(autofilter)
+            usespotify = "spotify" in request.form
             imagename = "/" + response["public_id"] #+ "." + response["format"]
             
             print "CREATED POST WITH USERNAME: " + session['username'] + " WITH URL: " + url + " AND WITH CAPTION: " + caption
 
             if autofilter:
-                time = db.getTime()
-
-                improvement = ["e_auto_contrast", "e_improve", "e_auto_color", "e_fill_light"]
-            
-                filters = ["e_art:al_dente","e_art:athena","e_art:audrey","e_art:aurora","e_art:daguerre","e_art:eucalyptus","e_art:fes","e_art:frost","e_art:hairspray","e_art:hokusai","e_art:incognito","e_art:linen","e_art:peacock","e_art:primavera","e_art:quartz","e_art:red_rock","e_art:refresh","e_art:sizzle","e_art:sonnet","e_art:ukulele","e_art:zorro"]
+                url = applyFilter(imagename)
                 
-                if (random.randint(0,100) < 15):
-                    option = "e_oil_paint:50/"
-                else: option = ""
+            if usespotify:
+                temp = spotifyGet(caption)
+                if temp:
+                    caption = temp
             
-                effects = ["e_blur:100", "e_sharpen:100", "e_vignette"]
-
-                url = "https://res.cloudinary.com/dhan3kbrs/image/upload/" + improvement[time['second'] % 4] + "/" + filters[time['day'] % 21] + "/" + option + effects[time['minute'] % 3] + imagename
-
-                
             if db.canPost(session['username']):
                 db.createPost(session['username'], url, caption)
                 return redirect(url_for("mainpage"))
@@ -169,7 +161,28 @@ def logout():
         return render_template("logreg.html", successmsg="You have been logged out.")
     return redirect(url_for("mainpage"))
 
-      
+# APPLIES FILTER WITH AN IMAGE NAME
+def applyFilter(imagename):
+    time = db.getTime()
+    improvement = ["e_auto_contrast", "e_improve", "e_auto_color", "e_fill_light"]
+    filters = ["e_art:al_dente","e_art:athena","e_art:audrey","e_art:aurora","e_art:daguerre","e_art:eucalyptus","e_art:fes","e_art:frost","e_art:hairspray","e_art:hokusai","e_art:incognito","e_art:linen","e_art:peacock","e_art:primavera","e_art:quartz","e_art:red_rock","e_art:refresh","e_art:sizzle","e_art:sonnet","e_art:ukulele","e_art:zorro"]
+    if (random.randint(0,100) < 15):
+        option = "e_oil_paint:50/"
+    else: option = ""
+    effects = ["e_blur:100", "e_sharpen:100", "e_vignette"]
+    return "https://res.cloudinary.com/dhan3kbrs/image/upload/" + improvement[time['second'] % 4] + "/" + filters[time['day'] % 21] + "/" + option + effects[time['minute'] % 3] + imagename
+
+# GETS A SPOTIFY SONG FROM A CAPTION
+def spotifyGet(songname):
+    things = { "q" : songname , "type" : "track"}
+    res = req.get("https://api.spotify.com/v1/search", params=things)
+    try:
+        firstresult = res.json()["tracks"]['items'][0]
+    except Exception as e:
+        return False
+    caption = "<iframe src='https://embed.spotify.com/?uri=%s' frameborder='0' width='300' height='80'></iframe>" % firstresult['uri']
+    return caption
+
 if __name__ == "__main__":
     app.debug = True
     app.run()

@@ -28,16 +28,36 @@ var loadPhoto = function() {
 	submitButton.setAttribute("value", "upload");
 	submitButton.className += "btn btn-default";
 
+	
 	var filterCheckbox = document.createElement("INPUT");
 	filterCheckbox.setAttribute("id", "filterCheckbox");
 	filterCheckbox.setAttribute("type", "checkbox");
 	filterCheckbox.setAttribute("name", "filter");
 	filterCheckbox.setAttribute("value", "filter");
 
-	
-	if (formnoodle.childElementCount < 4) {
+	var filter = document.createElement("LABEL");
+	filter.setAttribute("for", "filterCheckbox");
+	filter.innerHTML = "Use Filter: ";
+	filter.appendChild(filterCheckbox);
+
+	var spotifyCheckbox = document.createElement("INPUT");
+	spotifyCheckbox.setAttribute("id", "spotifyCheckbox");
+	spotifyCheckbox.setAttribute("type", "checkbox");
+	spotifyCheckbox.setAttribute("name", "spotify");
+	spotifyCheckbox.setAttribute("value", "spotify");
+
+	var spotify = document.createElement("LABEL");
+	spotify.setAttribute("for", "spotifyCheckbox");
+	spotify.innerHTML = "Search Spotify: ";
+	spotify.appendChild(spotifyCheckbox);
+
+	if (formnoodle.childElementCount < 5) {
 	    formnoodle.appendChild(caption);
-	    formnoodle.appendChild(filterCheckbox);
+	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.appendChild(filter);
+	    formnoodle.appendChild(document.createElement("br"));
+	    formnoodle.appendChild(spotify);
+	    formnoodle.appendChild(document.createElement("br"));
 	    formnoodle.appendChild(submitButton);
 	}
 	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
