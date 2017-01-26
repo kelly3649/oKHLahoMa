@@ -47,6 +47,9 @@
   <div class="col-md-3"></div>
   <div class="col-md-6">
     <div class="container-fluid" id="thePosts">
+      {% if noPosts %}
+      <p>You are not following anyone. Please go to <a href="/discover">Discover</a> to find users to follow.</p>
+      {% else %}
       {% for post in posts %}
       {% if (not following) and (post["author"] != username) or following %}
       <img class="img-responsive" src={{ post['photo_link'] }}; alt="I tried"><br>
@@ -66,6 +69,8 @@
       <br><br>
       {% endif %}
       {% endfor %}
+
+      {% endif %}
     </div>
   </div>
   <div class="col-md-3"></div>
