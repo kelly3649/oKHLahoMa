@@ -11,3 +11,6 @@ Mr. Brown | Software Development | Pd 8 | Fall 2016
 The goal is to upload each day and build up the streak. This way, you can document each day of your life one photo at a time!
 
 Users can follow each other to receive their photos on their Feeds. Alternatively, users can visit a user’s profile page to see all of the user’s posts.
+
+--
+Watch our demo video [here](https://www.youtube.com/watch?v=rta3DVlKtCQ).
