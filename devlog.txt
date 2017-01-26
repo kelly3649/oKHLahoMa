@@ -143,3 +143,6 @@ uploaded the video & emailed Mr. Brown
 
 haleyZ -- 2017-01-26 02:11
 updated design doc to reflect current status of project
+
+haleyZ -- 2017-01-26 02:45
+added more comments to code, commented out/deleted diagnostic print statements, turned off app debug
