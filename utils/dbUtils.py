@@ -176,7 +176,7 @@ def canPost(username):
     timenow = int(time.time())
     userinfo = getUserInfo(username)
     try:
-        return True#time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
+        return time.gmtime(timenow)[2] != time.gmtime(userinfo['last_upload'])[2] or len(getSomePosts(10,0,username)) == 0
     except Exception:
         return False
 
