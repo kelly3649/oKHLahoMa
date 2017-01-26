@@ -40,7 +40,6 @@ var loadMore = function(){
 		    var caption = '<i>' + entry['caption'] + '</i>';
 
 		    var post = img + '<br>by ' + authorTag + ' on ' + entry['uploadDate'] + '<br>' + caption + '<br><hr><br><br>';
-		    console.log(post);
 
 		    postArea.innerHTML = postArea.innerHTML + post;
 

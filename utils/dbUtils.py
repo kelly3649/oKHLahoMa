@@ -152,7 +152,6 @@ def deletePost(username, post_id):
         c.execute("DELETE FROM posts WHERE post_id = ?", (post_id,))
         db.commit()
         if getUserInfo(username)["last_upload"] == postdata["raw_upload_date"]:
-            print "YIKES"
             lastPost = getSomePosts(1, 0, username)
             if len(lastPost) != 0:
                 c.execute("UPDATE users SET last_upload = ? WHERE username = ?", (lastPost["raw_upload_date"], username))

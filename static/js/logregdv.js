@@ -1,3 +1,5 @@
+
+/* uses ajax to check if username is available (for register)*/
 var usernameAvailable = function(username) {
     var input = { 'text' : username};
 
@@ -19,9 +21,8 @@ var usernameAvailable = function(username) {
     });
 };
 
-
+/* checks that username and password fields filled in */
 var validateLogin = function(){
-    console.log("validateIsRunning");
     var username = document.forms["login"]["username"].value;
     var pass1 = document.forms["login"]["password"].value;
     var alertmsg = "";
@@ -45,6 +46,12 @@ var validateLogin = function(){
 	return false;
     }
 };
+
+/* checks register form: 
+   * all fields filled in
+   * password meets 10 char req 
+   * username is available 
+*/
 
 var validateRegister = function(){
     var success = true;

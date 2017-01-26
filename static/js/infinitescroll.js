@@ -1,6 +1,17 @@
 var nextPageToLoad = 1;
 var hasMore = true;
 
+
+/* runs every time user scrolls
+ * checks if user reached the bottom
+ * if not, do nothing
+ * if so, use ajax to call the function to get more posts
+   * append the posts to the page HTML
+   * if function returns no posts then no more posts to be displayed, 
+     hasMore = false,
+     next time user reaches the bottom, don't bother calling the ajax anymore 
+     because you know you finished fetching all the posts
+*/
 var loadMore = function(){
     
     if (hasMore && window.innerHeight + document.body.scrollTop >= document.body.clientHeight){
@@ -50,7 +61,6 @@ var loadMore = function(){
 
 		    
 		    var post = img + '<br>by ' + authorTag + ' on ' + entry['uploadDate'] + '<br>' + caption + deleteButton + '<br><hr><br><br>';
-		    console.log(post);
 
 		    postArea.innerHTML = postArea.innerHTML + post;
 
@@ -64,15 +74,13 @@ var loadMore = function(){
      });
 	
     }
-    else {
-	console.log("fail");
-    }
 	
 }
 
 var attach = function(){
     window.addEventListener("scroll", loadMore);
-    loadMore();
+    loadMore(); //run the fxn in case the user is at the bottom once the page loads
 }
 
+/* only allow this to happen once page is loaded*/
 window.onload = attach;

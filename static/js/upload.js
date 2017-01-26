@@ -10,6 +10,14 @@ filenoodle.onchange = function() {
     labelnoodle.innerHTML = "Browse";
 };
 
+
+/* once you select a photo to upload the upload window will update and
+   * display the photo so you can preview it
+   * give you a caption box
+   * give you the option to apply mystery filter
+   * give you the option to use spotify song search
+   * put in the submit button to finalize the upload
+*/
 var loadPhoto = function() {
 
     var file = document.getElementById("noot").files[0];
@@ -67,8 +75,6 @@ var loadPhoto = function() {
 	    formnoodle.innerHTML = formnoodle.innerHTML += "<br>";
 	    formnoodle.appendChild(submitButton);
 	}
-
-	console.log(formnoodle.innerHTML);
 	
 	document.getElementById("thatimage").setAttribute("src", document.getElementById("lul").value);
 
@@ -77,6 +83,11 @@ var loadPhoto = function() {
 
 };
 
+/*if you exit the selection, 
+  everything added in after selecting the photo 
+  (photo preview, caption, filter and spotify checkboxes, submit button)
+  goes away
+*/
 var clear = function(){
     if (formnoodle.childElementCount > 1) {
 	var caption = document.getElementById("caption");
@@ -102,9 +113,6 @@ var clear = function(){
 	document.getElementById("lul").value = "";
 	document.getElementById("thatimage").setAttribute("src", "");
 	labelnoodle.innerHTML = "Browse";
-	
-
-
     }
 };
 
@@ -117,9 +125,6 @@ var btn = document.getElementById("upload");
 var btn_wrapper = document.getElementById("upload-wrapper");
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
-
-console.log(btn_wrapper.className);
-console.log(btn_wrapper.className.length);
 
 if (btn_wrapper.className == "") { //button isn't disabled, user can upload
     /* When the user clicks on the button, open the modal */

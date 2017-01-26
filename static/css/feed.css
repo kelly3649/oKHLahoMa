@@ -16,16 +16,18 @@
 #loading-container { 
     text-align: center;
 }
+/* end of loading wheel */
 
 #loading {
     display: none;
     margin: 0 auto;
 }
 
+/* meta-data for ajax purposes -- don't display it*/
 #profileLabel, #ownprofile {
     display: none;
 }
-/* end of loading wheel */
+
 
 
 /* modal stuff */
