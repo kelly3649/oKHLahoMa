@@ -128,3 +128,18 @@ haleyZ -- 2017-01-25 15:11
 * added streak info to myProfile
 * updated design doc to reflect current version
 * added deleting post button to the infinite scroll js so that the newly loaded posts will also have the delete button
+
+danielM & haleyZ -- 2017-01-25 18:30
+last minute bug fixes
+
+edmondL -- 2017-01-25 20:11
+finished recording the demo video, both the screen-recording and voiceover
+
+danielM -- 2017-01-25 22:09
+finished editing the video (cut out mistakes, added title pages and transitions)
+
+kellyW -- 2017-01-25 22:49
+uploaded the video & emailed Mr. Brown
+
+haleyZ -- 2017-01-26 02:11
+updated design doc to reflect current status of project
